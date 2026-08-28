@@ -1,226 +1,122 @@
 # Upstream contribution guide
 
-This repo carries **local** workarounds so OCTA-CAPTURE / QUAD-CAPTURE work on
-Fedora today. Upstream targets differ by layer. Prefer landing in **ALSA /
-kernel / alsa-ucm-conf** first; Fedora then picks those up. Do **not** open
-Fedora-only PRs for these unless upstream has stalled for a long time.
+The upstream goal is reliable audio and conventional MIDI without requiring the
+Roland Capture Control application. The vendor control surface remains
+userspace software.
 
-## Recommended bundling
+This deliberately avoids a kernel vendor mixer, new ALSA control ABI, generic
+mixer lifecycle changes, and USB-MIDI infrastructure changes.
 
-| # | What | Where | Depends on |
-|---|------|-------|------------|
-| **A** | OCTA sample-format fix (`S24_3LE`) | Linux kernel (`snd-usb-audio`) | — |
-| **B** | Multi-rate alts + vendor rate-on-start (OCTA **and** QUAD) | Same kernel series as A | A for OCTA |
-| **C** | OCTA HiFi UCM stereo splits | [alsa-ucm-conf](https://github.com/alsa-project/alsa-ucm-conf) | Works with stock 44.1; nicer with B |
-| **D** | Roland Capture ALSA mixer controls | Linux `sound/usb/mixer_roland_capture.c` | A/B independent; protocol evidence required |
-| — | Desktop UI, presets, diagnostics, compatibility SysEx backend | **Stay here** | D preferred, direct fallback supported |
+## Deliverables
 
-Do **not** split OCTA rates vs QUAD rates into separate kernel series: both share
-the same vendor USB rate SET and the same endpoint-start hook. One series is
-easier to review.
+| Work | Destination | Purpose |
+|---|---|---|
+| OCTA 24-bit format correction | Linux `snd-usb-audio` | Replace corrupt/white-noise audio with `S24_3LE` |
+| OCTA/QUAD alternate settings | Linux `snd-usb-audio` | Expose 44.1, 48, 96, and 192 kHz with correct channel counts |
+| Roland rate-on-start quirk | Linux `snd-usb-audio` | Keep the hardware clock synchronized with the selected PCM format |
+| OCTA/QUAD UCM profiles | `alsa-ucm-conf` | Present practical desktop endpoints in PipeWire |
+| Hardware mixer, presets, meters, diagnostics | This repository | Provide the complete optional control panel |
 
-Do **not** put the UCM profile in the kernel series — different tree and
-maintainers.
+The reduced kernel implementation changes only:
 
----
+- `sound/usb/quirks-table.h`
+- `sound/usb/quirks.c`
 
-## A — OCTA-CAPTURE: make audio work at all
+The UCM profiles are submitted to their own repository. No mixer, MIDI, or
+generic USB-audio lifecycle files belong in the kernel series.
 
-**Problem:** Stock quirk hard-codes `S32_LE` (4 bytes/sample). The device
-streams **24-bit in 3 bytes** (`S24_3LE`). Result: garbage / noise / silence
-even at 44.1 kHz.
+## Kernel series
 
-**Where:** Linux kernel — `sound/usb/quirks-table.h` for `USB_DEVICE(0x0582, 0x0120)`.
+Prepare reviewable commits against the current sound tree:
 
-**How to send:**
+1. **ALSA: usb-audio: Fix sample format for Roland OCTA-CAPTURE**
 
-1. Base on current mainline (or `sound.git` / linux-next as maintainers prefer).
-2. One small patch: change OCTA playback/capture format to `SNDRV_PCM_FMTBIT_S24_3LE`
-   for the existing 44.1 kHz altsettings only. Also fix the comment
-   `OCTO-CAPTURE` → `OCTA-CAPTURE`.
-3. Email to **alsa-devel@alsa-project.org** (Cc: Takashi Iwai / USB-audio
-   maintainers as per `MAINTAINERS`). Subject prefix:
-   `ALSA: usb-audio: …`
-4. Use `Signed-off-by:`, describe before/after (noise → clean tone), include
-   `alsa-info.sh` and a note that QUAD (`0x012f`) already uses `S32_LE` correctly.
+   Change the existing 44.1 kHz playback and capture entries from
+   `SNDRV_PCM_FMTBIT_S32_LE` to `SNDRV_PCM_FMTBIT_S24_3LE`. Correct the
+   existing `OCTO-CAPTURE` typo. This patch should stand alone and is the
+   stable-backport candidate.
 
-**Local source:** the format hunks in [`patches/quirks-table-octa-quad.patch`](patches/quirks-table-octa-quad.patch).
+2. **ALSA: usb-audio: Add Roland OCTA/QUAD-CAPTURE sample rates**
 
-**Tip:** This patch can land alone if reviewers want rates later. It is the
-highest-value, lowest-risk change.
+   Add one fixed format entry per USB alternate setting. Preserve the verified
+   192 kHz channel reductions: OCTA 4/4 and QUAD 2/2.
 
----
+3. **ALSA: usb-audio: Set Roland Capture clock when starting PCM**
 
-## B — Multi-rate clocks (OCTA + QUAD) + vendor rate SET
+   Read the current vendor clock, write only when it differs, and poll for the
+   selected rate before streaming begins. There is no module parameter or
+   dependency on the userspace application.
 
-**Problem:** Stock quirks hide USB altsettings 2–4, so only **44.1 kHz** is
-visible. Hardware supports 48 / 96 / 192. Rate changes are **vendor USB**, not
-class-compliant clock selectors. Opening PCM at rate *N* must SET the hardware
-clock or you get silent / wrong-rate streams (especially with PipeWire locked
-to 48 kHz).
+4. **ALSA: usb-audio: Expose OCTA-CAPTURE control MIDI cables**
 
-**Where:** Same kernel tree:
+   Expose the verified asymmetric masks, host output `0x0005` and device input
+   `0x0003`. Cable 0 remains conventional MIDI. The extra cables allow the
+   optional userspace panel to work through normal raw-MIDI/ALSA sequencing.
 
-| File | Change |
-|------|--------|
-| `sound/usb/quirks-table.h` | OCTA + QUAD: expose alts 1–4 with correct formats, channel counts, and one rate per alt |
-| `sound/usb/quirks.c` | On endpoint start for `0x0120` / `0x012f`, vendor SET rate (`0x40` OUT / `0x0008`, poll IN `0x0001`) |
+If maintainers prefer fewer commits, 2 and 3 can be one series, but the format
+correction should remain independently reviewable.
 
-**How to send:**
+## Expected operation without the application
 
-1. Prefer a **single series** after (or including) patch A, e.g.:
-   - `PATCH 1/2` — OCTA `S24_3LE` (A)
-   - `PATCH 2/2` — expose multi-rate alts for OCTA+QUAD + rate-on-start quirk
-2. Same path: **alsa-devel** mailing list (or `b4` / lore against sound tree).
-3. Document:
-   - One rate per altsetting (do **not** advertise a wide `rate_max` on alt 1).
-   - Channel drop at 192 kHz (OCTA 4/4, QUAD 2/2).
-   - Implicit feedback: playback needs capture open (existing behavior).
-4. Test matrix: 44.1 / 48 / 96 / 192 on both devices with PipeWire and a simple
-   ALSA `aplay`/`arecord` pair; attach `alsa-info.sh` + `/proc/asound/card*/stream0`.
+Kernel plus ALSA/PipeWire provides:
 
-**Local source:**
+- Clean OCTA 24-bit playback and capture
+- 44.1, 48, 96, and 192 kHz
+- Automatic hardware clock synchronization
+- Correct multichannel topology at every rate
+- Conventional MIDI
+- Pro Audio operation
+- Friendly desktop endpoints when the UCM profile is installed
 
-- [`patches/quirks-table-octa-quad.patch`](patches/quirks-table-octa-quad.patch)
-- [`patches/quirks-c-rate-on-start.patch`](patches/quirks-c-rate-on-start.patch)
+The physical panel and previously stored device state continue to govern
+vendor-specific preamps, compressors, direct monitoring, patch-bay routing, and
+reverb. Installing Roland Capture Control adds graphical access to those
+features but is not required for audio streaming.
 
-**Upstream vs this repo — `octa_capture_autoset`:**
+## UCM submission
 
-This repo’s rate-on-start patch adds a module param so the `octa` CLI can pause
-autoset while it drives rates. For **upstream**, prefer:
+Submit the files under `ucm2/USB-Audio/` to
+[alsa-project/alsa-ucm-conf](https://github.com/alsa-project/alsa-ucm-conf).
 
-- **Always-on** rate SET on endpoint start (no module param), **or**
-- Keep the param only if maintainers want an escape hatch.
-
-Do not block the series on userspace `octa`. Vanilla PipeWire/JACK should work
-with autoset enabled once alts + SET are present.
-
-**Do not submit “QUAD rates only” separately** unless OCTA hardware is
-unavailable for testing — the quirk code is shared.
-
----
-
-## C — OCTA-CAPTURE ALSA UCM HiFi profile
-
-**Problem:** QUAD already has stereo-pair sinks in GNOME Settings via distro
-UCM ([alsa-ucm-conf#494](https://github.com/alsa-project/alsa-ucm-conf/pull/494)).
-OCTA falls back to one **Multichannel** device.
-
-**Where:** GitHub PR → [alsa-project/alsa-ucm-conf](https://github.com/alsa-project/alsa-ucm-conf)
-
-**What to include** (from this repo’s [`ucm2/`](ucm2/)):
-
-| Path | Role |
-|------|------|
-| `USB-Audio/Roland/Octa-Capture.conf` | Use-case entry |
-| `USB-Audio/Roland/Octa-Capture-HiFi.conf` | SplitPCM stereo pairs |
-| Either `USB-Audio/conf.d/0582-0120.conf` **or** a `Macro.roland-octacapture.StringMatch` line in `USB-Audio/USB-Audio.conf` (match how QUAD was done) |
-
-**How to send:**
-
-1. Fork `alsa-ucm-conf`, one commit, `Signed-off-by:`.
-2. PR description: list output/input labels; note 192 kHz → use **Pro Audio**
-   (HiFi assumes 10/12 channels).
-3. Attach `alsa-info.sh` with OCTA connected and HiFi active.
-4. Mention patch-bay caveat briefly (OUTPUT 1–2 often **Direct Mix A**, which
-   sums all WAVE OUTs) so testers are not confused.
-
-Independent of kernel A/B: UCM works at stock 44.1 once format (A) is fixed;
-multi-rate (B) is not required for the PR.
-
-Fedora’s `alsa-ucm` package tracks this repo — no separate Fedora UCM PR needed
-after merge.
-
----
-
-## D — dedicated Roland Capture mixer support
-
-Do not replace `snd-usb-audio`. Keep the existing Roland streaming and implicit
-feedback quirks, and add a vendor mixer module following the organizational
-precedent of `mixer_scarlett2.c`:
-
-- `mixer_roland_capture.c/.h` owns protocol transport, locking, cached state,
-  ALSA control callbacks, model capability tables, and lifecycle cleanup.
-- The transport opens the dedicated control-cable pair through the existing
-  ALSA raw-MIDI kernel API; it adds no USB-MIDI client API, callback interception,
-  or Roland-specific packet handling to `sound/usb/midi.c`.
-- Conventional MIDI cable 0 remains a normal userspace MIDI substream while
-  ALSA exclusive-open semantics reserve only the control substreams.
-- `mixer_quirks.c` contains only the VID/PID dispatch hook.
-- `quirks-table.h`, `quirks.c`, and `implicit.c` continue to handle descriptor,
-  rate-start, MIDI endpoint, and streaming behavior.
-- Start with OCTA and one small verified control group. Split later control
-  families into reviewable patches rather than submitting the whole userspace
-  implementation at once.
-- Treat public pcaps and the current memory map as evidence, not a boundary.
-  Recover gaps through controlled captures and, only where needed, clean-room
-  behavioral analysis of the proprietary Windows stack; keep the resulting
-  implementation independent and expressed through the same ALSA control ABI.
-
-The desktop application should prefer these ALSA controls and preserve direct
-SysEx only for older kernels or capabilities not yet upstream. Detailed design
-and review gates are in [`docs/KERNEL-MIXER.md`](docs/KERNEL-MIXER.md).
-
----
-
-## What stays out of those PRs (on purpose)
-
-| Item | Why |
-|------|-----|
-| `octa` CLI (`rate` / `sync` / `watch` / SysEx) | Userspace convenience; kernel autoset covers the common case |
-| WirePlumber `99-octa-*.conf` drop-ins | Distro/user config; channel counts follow USB alts after B |
-| `scripts/install-kernel-module.sh` | Distro packaging / DKMS territory, not ALSA |
-| `scripts/99-octa-capture.rules` | Needed for **userspace** USB rate control; unnecessary if only kernel SET is used |
-| Local preset files and confirmation workflows | Userspace policy, not ALSA control mechanism |
-| Graphical meters and UI state | Remain in the desktop app; kernel controls expose stable mechanisms only |
-
----
-
-## Suggested order of work
-
-```text
-1. Kernel PATCH A          → alsa-devel   (OCTA actually plays audio)
-2. Kernel PATCH B          → alsa-devel   (48/96/192 + vendor SET, both devices)
-3. alsa-ucm-conf PR C      → GitHub       (OCTA desktop stereo pairs)
-4. Kernel mixer PATCH D    → alsa-devel   (small verified control groups)
-5. Make UI ALSA-first      → direct SysEx remains an older-kernel fallback
-```
-
-C can be filed in parallel with B. A should go first or as 1/N of the kernel
-series so bisect stays clean if rates need another revision.
-
----
+Keep obvious stereo destinations together, including Main, Phones, coaxial
+digital, and Direct Mix left/right outputs. Preserve independent analog inputs.
+At 192 kHz, users should select the Pro Audio profile because the channel count
+is reduced by the hardware.
 
 ## Submission checklist
 
-### Kernel (A / B)
+### Current local verification
 
-- [ ] Patches against current sound / mainline tree
+- Current mainline: full `sound/usb` `W=1` build passes.
+- Strict `checkpatch`: zero errors, warnings, or checks.
+- Fedora 7.1.10 reduced module: hot-loaded with the stock
+  `snd-usbmidi-lib` and both devices enumerated correctly.
+- QUAD-CAPTURE: simultaneous 4-channel playback and 6-channel capture at
+  96 kHz used altsetting 3; vendor readback confirmed 96 kHz, then the device
+  was restored to 48 kHz.
+- OCTA-CAPTURE: 48 kHz playback/capture topology is intact. Its 96 kHz test was
+  intentionally unavailable while locked to the attached QUAD's 48 kHz coaxial
+  clock; this is an external-clock constraint, not claimed as a passing rate test.
+
+- [ ] Rebase on the current sound maintainer tree
+- [ ] One logical change per commit
+- [ ] Subject prefix `ALSA: usb-audio:`
+- [ ] Imperative commit messages explaining the observed failure and fix
 - [ ] `Signed-off-by:` on every commit
-- [ ] Subject: `ALSA: usb-audio: …`
-- [ ] Sent to alsa-devel (see [alsa-project.org](https://www.alsa-project.org/) / lore.kernel.org)
-- [ ] Tested on real OCTA (`0582:0120`) and QUAD (`0582:012f`) where claimed
-- [ ] `/proc/asound/card*/stream0` shows expected Format / Rates / Altsets
-- [ ] No wide `rate_max` on a single altsetting
+- [ ] Run `scripts/checkpatch.pl --strict`
+- [ ] Run a clean `W=1` build of `sound/usb`
+- [ ] Test 44.1/48/96/192 kHz on real OCTA and QUAD hardware where claimed
+- [ ] Verify playback and capture together because playback uses implicit feedback
+- [ ] Capture `/proc/asound/card*/stream0` and `alsa-info.sh`
+- [ ] Send to `linux-sound@vger.kernel.org` and recipients from `get_maintainer.pl`
+- [ ] Submit UCM separately from kernel patches
 
-### UCM (C)
+## Repository map
 
-- [ ] PR to https://github.com/alsa-project/alsa-ucm-conf
-- [ ] Modeled on QUAD PR [#494](https://github.com/alsa-project/alsa-ucm-conf/pull/494)
-- [ ] `Signed-off-by:` + `alsa-info.sh` attachment
-- [ ] HiFi + Pro Audio both mentioned; 192 kHz called out
-
----
-
-## Quick map of this repo → upstream
-
-| Local path | Upstream destination |
-|------------|----------------------|
-| `patches/quirks-table-octa-quad.patch` (format only) | Kernel A |
-| `patches/quirks-table-octa-quad.patch` (alts 2–4) | Kernel B |
-| `patches/quirks-c-rate-on-start.patch` | Kernel B |
-| `patches/mixer-roland-capture*.patch` | Kernel D |
-| `ucm2/USB-Audio/…` | alsa-ucm-conf C |
-| `src/`, desktop integration, presets, PipeWire conf | Remain in **octa**; consume D when present |
-
-More background on the bugs: [`docs/KERNEL-FIX.md`](docs/KERNEL-FIX.md).
+| Local path | Destination |
+|---|---|
+| `patches/quirks-table-octa-quad.patch` | Kernel descriptor changes |
+| `patches/quirks-c-rate-on-start.patch` | Kernel vendor clock quirk |
+| `ucm2/USB-Audio/` | `alsa-ucm-conf` |
+| `src/`, presets, diagnostics, protocol tools | Remain in this project |
+| `docs/KERNEL-MIXER.md` | Historical engineering research, not an upstream plan |

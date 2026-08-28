@@ -1,10 +1,10 @@
 # Roland OCTA-CAPTURE / QUAD-CAPTURE — Linux audio
 
-Kernel mixer upstreaming follows the hybrid `snd-usb-audio` design in
-[`docs/KERNEL-MIXER.md`](docs/KERNEL-MIXER.md): streaming compatibility remains
-in the existing quirk paths, while stable Roland controls move into a dedicated
-ALSA mixer module and this desktop app becomes ALSA-first with a direct SysEx
-fallback for older kernels.
+Upstream kernel work is intentionally limited to reliable streaming: correct
+sample formats, alternate rates, automatic device-clock synchronization, and
+normal MIDI exposure. The complete Roland hardware control surface remains in
+this optional desktop application, so ALSA and PipeWire audio do not depend on
+installing it. See [`UPSTREAM.md`](UPSTREAM.md).
 
 Kernel quirk fix (multi-rate alts + vendor rate-on-start) + `octa` CLI for
 host-master rate switching and PipeWire sync. Optional ALSA UCM profiles expose
@@ -159,11 +159,11 @@ At **192 kHz** OCTA drops to **4 channels** (vs 10/12); QUAD drops to **2**
 ./scripts/install-native-driver.sh
 ```
 
-This builds the exact-kernel dedicated Roland Capture source tree and installs
-the paired `snd-usb-audio` and `snd-usbmidi-lib` modules transactionally. It
-backs up previous update modules, installs/reloads the non-root USB permission
-rule, reloads without a reboot, verifies the Roland snapshot, meter, and clock
-controls, and rolls back on failure. Set `DRIVER_TREE` when
+This builds the exact-kernel streaming-only Roland Capture source tree and
+installs `snd-usb-audio` transactionally while retaining the distribution's
+unchanged `snd-usbmidi-lib`. It backs up previous update modules,
+installs/reloads the non-root USB permission rule, reloads without a reboot,
+verifies the Roland PCM topology, and rolls back on failure. Set `DRIVER_TREE` when
 the prepared tree is not the adjacent `linux-roland-fedora-$(uname -r | cut
 -d- -f1)` directory. Re-run after kernel upgrades. It installs no service,
 cron job, or background process.

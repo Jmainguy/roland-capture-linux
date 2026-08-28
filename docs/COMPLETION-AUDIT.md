@@ -49,7 +49,7 @@ gate remains open.
 | Diagnostic CLI and privacy-safe support export | verified-live | installed `octa status`; live schema-1 `support-bundle` JSON; diagnostics unit test proves serialization excludes identity fields; installed verifier rejects a stale PATH-shadowing CLI | none |
 | ALSA/PipeWire audio preserved | verified-live | both streams remained running at 44.1 kHz through 369 telemetry/snapshot iterations over 120 seconds; no XRUN/USB/PipeWire errors; eight rate transitions restored 44.1 kHz; final installed audit shows both streams running with correct 10/12-channel nodes | none for the requested audio-preservation scope; system suspend/resume is a separate platform integration test |
 | Desktop packaging and installed metadata | verified-live | binary byte comparison, desktop-file and AppStream validation in `scripts/verify-live-install.sh` | distribution package publication is separate from functional completion |
-| Kernel architecture suitable for upstreaming | implemented/tested locally | dedicated `sound/usb/mixer_roland_capture.c` design and paired local modules; current Linux 7.2 tree compiles every `sound/usb` object and links both module objects; `docs/KERNEL-MIXER.md` | upstream RFC submission is separate from local functional completion |
+| Kernel streaming fixes suitable for upstreaming | implemented/tested locally | reduced changes are confined to `quirks-table.h` and `quirks.c`; current mainline compiles every `sound/usb` object with `W=1`; `UPSTREAM.md` | final mail-ready commit messages and current-hardware test attachments remain |
 
 The goal must remain active while any objective-backed row is partial or merely
 implemented. Destructive operations are not silently exercised as part of an

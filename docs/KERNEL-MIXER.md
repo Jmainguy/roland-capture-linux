@@ -1,6 +1,12 @@
-# Roland Capture kernel mixer design
+# Roland Capture kernel mixer research
 
-## Decision
+> **Historical design record:** this implementation remains useful protocol and
+> hardware-validation research, but it is not part of the upstream submission
+> plan. Upstream work is limited to streaming quirks and UCM profiles. The full
+> hardware control plane remains in the optional userspace application; see
+> [`../UPSTREAM.md`](../UPSTREAM.md).
+
+## Superseded design decision
 
 Keep OCTA/QUAD audio streaming inside `snd-usb-audio`. Descriptor fixes,
 alternate settings, rate-on-start, MIDI cable discovery, and Roland implicit

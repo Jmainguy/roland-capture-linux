@@ -1,5 +1,14 @@
 # OCTA-CAPTURE Linux roadmap
 
+## Current upstream boundary
+
+The upstream deliverable is streaming correctness only: OCTA's packed 24-bit
+format, OCTA/QUAD alternate rates, automatic vendor clock synchronization, MIDI
+cable exposure, and separate UCM profiles. It does not include a kernel Roland
+mixer or changes to shared mixer/MIDI infrastructure. The complete control
+surface remains in this optional userspace application. Older kernel-mixer
+milestones below are retained as engineering history and protocol evidence.
+
 Protocol discovery update (2026-08-27): the public
 [`dctucker/roland-capture`](https://github.com/dctucker/roland-capture)
 repository contains OCTA-specific Windows captures and a nearly complete mixer
@@ -646,10 +655,9 @@ commands; it does not authorize speculative live writes.
    offers no safe host-side recovery. Preserve the exported baseline and
    captured failed transaction for comparison.
 4. Complete sustained simultaneous audio/MIDI/control traffic, suspend/resume,
-   XRUN, and interactive accessibility verification. Cold-boot discovery and
-   vendor-mixer initialization are verified in the current boot journal.
-5. Prepare the dedicated mixer and format fixes for upstream ALSA review and
-   extend the matrix to QUAD-specific behavior when hardware is available.
+   XRUN, and interactive accessibility verification.
+5. Prepare only the format, alternate-rate, automatic-clock, and MIDI-cable
+   quirks for upstream ALSA review; keep the full mixer in userspace.
 6. Capture one Windows session containing control-panel startup plus exactly one
    low-risk reversible control change; use it to establish the trace/ledger
    format before collecting the full corpus.
@@ -690,9 +698,8 @@ alternate settings; live 48 kHz playback used altsetting 2 at exactly 48 kHz.
 
 - Do not rewrite working ALSA USB infrastructure as a standalone driver unless
   evidence proves the generic driver cannot support the hardware correctly.
-- Do not grow Roland mixer support as a large table or implementation inside
-  `quirks-table.h` or `mixer_quirks.c`; those files should only identify and
-  dispatch to the dedicated mixer module.
+- Do not add Roland hardware-mixer controls or generic mixer/MIDI infrastructure
+  to the upstream kernel series. Keep vendor control policy in userspace.
 - Do not translate decompiled proprietary code line-for-line.
 - Do not treat a successful stream open as proof of correct sample framing,
   channel order, clocking, or long-term stability.

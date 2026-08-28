@@ -107,12 +107,11 @@ approximately 1 kHz:
 - Both captures were internal-clock state (`external=0`). Byte 7 was 1, but the
   Windows UI intentionally ignores the lock field while the source is internal.
 
-The native kernel mixer now owns this interrupt endpoint continuously and
-exports a volatile `Clock State` ALSA control containing validity, source,
-lock, external frequency, and the still-unassigned rate flag. The desktop UI,
-diagnostic CLI, and support bundle consume that control. Live 44.1 → 48 → 44.1
-kHz transitions updated the endpoint value immediately without interrupting
-endpoint ownership; the OCTA and PipeWire returned to 44.1 kHz afterward.
+The experimental kernel-mixer prototype owned this endpoint continuously and
+exposed decoded clock telemetry during protocol validation. That prototype is
+not part of the upstream plan. The desktop UI and diagnostic CLI retain their
+userspace telemetry path, while the reduced kernel change handles only the
+vendor sample-rate transaction needed before PCM streaming.
 
 `scripts/verify-clock-state.sh` provides the remaining read-only physical
 acceptance test. It requires ten identical live ALSA samples and can separately
@@ -496,16 +495,17 @@ The corpus now also includes paired `*.controls.jsonl` derivatives, generated
 by matching each USB control submission to its completion. These are easier to
 diff, while normalized packet records remain authoritative.
 
-### Meter ownership and lease
+### Experimental kernel meter ownership and lease
 
-The dedicated kernel MIDI client reserves the OCTA control cable, so userspace
+The retired kernel-mixer prototype reserved the OCTA control cable, so userspace
 must not attempt to open a second sequencer path for live meters. The kernel now
 parses `00 0a 00 01` pre-compressor and `00 0a 00 11` post-compressor 14-bit
 meter frames and exposes eight read-only ALSA controls for each family. A
 `Meter Stream` control sends the verified `00 0a 00 00` enable/disable byte.
 Enabling creates a one-second kernel lease; the panel renews it while open,
 normal close disables immediately, and a hard-killed panel was physically
-verified to time out back to Off without a daemon.
+verified to time out back to Off without a daemon. Production and upstream
+builds keep this workflow in the optional userspace application.
 
 ### Compressor display domains
 

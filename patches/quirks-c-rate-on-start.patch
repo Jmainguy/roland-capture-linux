@@ -1,119 +1,82 @@
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index eb1750def..37059bdc6 100644
 --- a/sound/usb/quirks.c
 +++ b/sound/usb/quirks.c
-@@ -5,11 +5,13 @@
+@@ -3,6 +3,7 @@
+  */
+ 
  #include <linux/cleanup.h>
++#include <linux/delay.h>
  #include <linux/err.h>
  #include <linux/init.h>
-+#include <linux/module.h>
  #include <linux/slab.h>
- #include <linux/string.h>
- #include <linux/usb.h>
- #include <linux/usb/audio.h>
- #include <linux/usb/midi.h>
-+#include <linux/delay.h>
- #include <linux/bits.h>
- 
- #include <sound/control.h>
-@@ -1928,8 +1930,103 @@
+@@ -1855,6 +1856,58 @@ static int rme_digiface_set_format_quirk(struct snd_usb_substream *subs)
  	return 0;
  }
  
-+
-+/*
-+ * Roland OCTA/QUAD-CAPTURE: vendor sample-rate on endpoint start (not prepare).
-+ * octa_capture_autoset (default Y) lets vanilla PW/JACK set the clock; `octa`
-+ * clears it around rate changes so WP 48 kHz starts do not snap the hardware.
-+ */
-+static bool octa_capture_autoset = true;
-+module_param_named(octa_capture_autoset, octa_capture_autoset, bool, 0644);
-+MODULE_PARM_DESC(octa_capture_autoset,
-+		 "OCTA/QUAD-CAPTURE: set vendor sample rate when PCM endpoints start");
-+
-+static int octa_capture_read_rate(struct usb_device *dev, u32 *rate_ret, u8 *status_ret)
++static int roland_capture_read_rate(struct usb_device *dev, u32 *rate)
 +{
-+	u8 buf[4];
++	u8 data[4];
 +	int err;
-+	u32 rate;
 +
-+	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0),
-+			      3, USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-+			      0x0001, 0, buf, 4);
-+	if (err != 4)
++	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), 3,
++			      USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
++			      0x0001, 0, data, sizeof(data));
++	if (err != sizeof(data))
 +		return err < 0 ? err : -EIO;
 +
-+	rate = buf[0] | (buf[1] << 8) | (buf[2] << 16);
-+	switch (rate) {
-+	case 44100:
-+	case 48000:
-+	case 96000:
-+	case 192000:
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	*rate_ret = rate;
-+	if (status_ret)
-+		*status_ret = buf[3];
++	*rate = combine_triple(data);
 +	return 0;
 +}
 +
-+static void octa_capture_set_rate(struct snd_usb_endpoint *ep)
++static void roland_capture_set_rate(struct snd_usb_endpoint *ep)
 +{
 +	struct snd_usb_audio *chip = ep->chip;
 +	struct usb_device *dev = chip->dev;
-+	u8 buf[4];
-+	u32 new_rate = ep->cur_rate;
-+	u32 cur_rate;
-+	u8 status;
-+	int err, i;
++	u32 rate = ep->cur_rate;
++	u32 current_rate;
++	u8 data[4];
++	int err;
++	int i;
 +
-+	if (!octa_capture_autoset)
-+		return;
-+	if (ep->type != SND_USB_ENDPOINT_TYPE_DATA)
-+		return;
-+
-+	switch (new_rate) {
-+	case 44100:
-+	case 48000:
-+	case 96000:
-+	case 192000:
-+		break;
-+	default:
-+		return;
-+	}
-+
-+	err = octa_capture_read_rate(dev, &cur_rate, &status);
-+	if (err == 0 && cur_rate == new_rate)
++	guard(mutex)(&chip->mutex);
++	err = roland_capture_read_rate(dev, &current_rate);
++	if (!err && current_rate == rate)
 +		return;
 +
-+	dev_info(&dev->dev, "Roland Capture: set sample rate to %u Hz\n", new_rate);
-+
-+	buf[0] = 0x40;
-+	buf[1] = new_rate & 0xff;
-+	buf[2] = (new_rate >> 8) & 0xff;
-+	buf[3] = (new_rate >> 16) & 0xff;
-+	err = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+			      3, USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-+			      0x0008, 0, buf, 4);
-+	if (err < 0) {
-+		dev_warn(&dev->dev, "Roland Capture: set-rate failed: %d\n", err);
++	data[0] = 0x40;
++	data[1] = rate;
++	data[2] = rate >> 8;
++	data[3] = rate >> 16;
++	err = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0), 3,
++			      USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
++			      0x0008, 0, data, sizeof(data));
++	if (err != sizeof(data)) {
++		usb_audio_warn(chip, "cannot set Roland sample rate to %u Hz: %d\n",
++			       rate, err < 0 ? err : -EIO);
 +		return;
 +	}
 +
-+	/* Ready when the clock reports the target rate (status byte is unreliable). */
 +	for (i = 0; i < 40; i++) {
-+		err = octa_capture_read_rate(dev, &cur_rate, &status);
-+		if (err == 0 && cur_rate == new_rate)
++		err = roland_capture_read_rate(dev, &current_rate);
++		if (!err && current_rate == rate)
 +			return;
 +		msleep(25);
 +	}
++	usb_audio_warn(chip, "Roland sample rate did not reach %u Hz\n", rate);
 +}
 +
+ void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
+ 			      const struct audioformat *fmt)
+ {
+@@ -1930,6 +1983,11 @@ int snd_usb_select_mode_quirk(struct snd_usb_audio *chip,
+ 
  void snd_usb_endpoint_start_quirk(struct snd_usb_endpoint *ep)
  {
-+	if (ep->chip->usb_id == USB_ID(0x0582, 0x0120) || /* OCTA-CAPTURE */
-+	    ep->chip->usb_id == USB_ID(0x0582, 0x012f)) /* QUAD-CAPTURE */
-+		octa_capture_set_rate(ep);
++	if ((ep->chip->usb_id == USB_ID(0x0582, 0x0120) ||
++	     ep->chip->usb_id == USB_ID(0x0582, 0x012f)) &&
++	    ep->type == SND_USB_ENDPOINT_TYPE_DATA)
++		roland_capture_set_rate(ep);
 +
  	/*
  	 * "Playback Design" products send bogus feedback data at the start

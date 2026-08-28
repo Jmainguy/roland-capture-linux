@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build, transactionally install, and reload the paired Roland Capture modules.
+# Build, transactionally install, and reload the streaming-only USB audio module.
 set -euo pipefail
 
 reload_modules=true
@@ -47,24 +47,24 @@ sudo -n true
 	echo "Missing exact kernel headers: /usr/src/kernels/$kernel_release" >&2
 	exit 1
 }
-[[ -f $module_dir/mixer_roland_capture.c && -f $module_dir/midi.c ]] || {
-	echo "Dedicated driver tree not found: $driver_tree" >&2
+[[ -f $module_dir/quirks.c && -f $module_dir/quirks-table.h ]] || {
+	echo "Prepared USB-audio driver tree not found: $driver_tree" >&2
 	echo "Set DRIVER_TREE to the prepared exact-kernel source tree." >&2
 	exit 1
 }
-grep -q 'snd_roland_capture_init' "$module_dir/mixer_roland_capture.c" || {
-	echo "Driver tree lacks the dedicated Roland Capture mixer." >&2
+grep -q 'roland_capture_set_rate' "$module_dir/quirks.c" || {
+	echo "Driver tree lacks automatic Roland sample-rate synchronization." >&2
 	exit 1
 }
-grep -q 'snd_usbmidi_kernel_client_create' "$module_dir/midi.c" || {
-	echo "Driver tree lacks the paired kernel MIDI transport." >&2
+grep -q 'SNDRV_PCM_FMTBIT_S24_3LE' "$module_dir/quirks-table.h" || {
+	echo "Driver tree lacks the OCTA-CAPTURE packed 24-bit correction." >&2
 	exit 1
 }
 
-echo "Building paired modules for $kernel_release from $driver_tree"
+echo "Building streaming-only USB audio support for $kernel_release from $driver_tree"
 make -C "/usr/src/kernels/$kernel_release" M="$module_dir" W=1 modules
-[[ -f $module_dir/snd-usb-audio.ko && -f $module_dir/snd-usbmidi-lib.ko ]] || {
-	echo "Expected paired module outputs were not built." >&2
+[[ -f $module_dir/snd-usb-audio.ko ]] || {
+	echo "Expected snd-usb-audio module was not built." >&2
 	exit 1
 }
 
@@ -140,11 +140,12 @@ systemctl --user mask --runtime pipewire-pulse.socket pipewire-pulse.service \
 sudo systemctl stop alsa-state.service 2>/dev/null || true
 sudo rm -f -- "$legacy_audio" "$legacy_midi"
 sudo install -m 0644 "$module_dir/snd-usb-audio.ko" "$audio_target"
-sudo install -m 0644 "$module_dir/snd-usbmidi-lib.ko" "$midi_target"
+# The reduced driver uses the distribution's unchanged snd-usbmidi-lib.
+sudo rm -f -- "$midi_target"
 sudo depmod -a "$kernel_release"
 
 if ! $reload_modules; then
-	echo "Installed paired Roland Capture modules for the next module load/reboot."
+	echo "Installed Roland Capture streaming support for the next module load/reboot."
 	echo "The currently loaded audio stack was not stopped or changed."
 	echo "Previous update modules are recoverable from: $backup_dir"
 	echo "No cron job, systemd unit, or persistent userspace process was installed."
@@ -161,7 +162,7 @@ if (( reload_status == 0 )); then
 fi
 set -e
 if (( reload_status != 0 )); then
-	echo "Paired reload failed; restoring the previous update modules." >&2
+	echo "USB-audio reload failed; restoring the previous update modules." >&2
 	restore_modules
 	exit 1
 fi
@@ -169,7 +170,7 @@ fi
 sleep 2
 audio_loaded=$(modinfo -n snd_usb_audio)
 midi_loaded=$(modinfo -n snd_usbmidi_lib)
-if [[ $audio_loaded != "$audio_target" || $midi_loaded != "$midi_target" ]]; then
+if [[ $audio_loaded != "$audio_target" || $midi_loaded == "$midi_target" ]]; then
 	echo "Module precedence verification failed; rolling back." >&2
 	echo "audio: $audio_loaded" >&2
 	echo "midi:  $midi_loaded" >&2
@@ -177,40 +178,30 @@ if [[ $audio_loaded != "$audio_target" || $midi_loaded != "$midi_target" ]]; the
 	exit 1
 fi
 
-octa_card=
+roland_card=
 for card in /proc/asound/card[0-9]*; do
 	[[ -f $card/usbid ]] || continue
-	if [[ $(<"$card/usbid") == 0582:0120 ]]; then octa_card=${card##*card}; break; fi
+	case $(<"$card/usbid") in
+		0582:0120|0582:012f) roland_card=${card##*card}; break ;;
+	esac
 done
-if [[ -z $octa_card ]]; then
-	echo "OCTA-CAPTURE did not return after reload; rolling back." >&2
+if [[ -z $roland_card ]]; then
+	echo "Roland Capture device did not return after reload; rolling back." >&2
 	restore_modules
 	exit 1
 fi
-amixer -c "$octa_card" cget name='Roland Capture Snapshot Generation' >/dev/null
-amixer -c "$octa_card" sget 'Meter Stream' >/dev/null
-amixer -c "$octa_card" cget name='Clock State' >/dev/null
+[[ -r /proc/asound/card$roland_card/stream0 ]] || {
+	echo "Roland PCM stream topology is unavailable; rolling back." >&2
+	restore_modules
+	exit 1
+}
 
-# Restart the graph before leaving, then restore its clock/channel profile to
-# the hardware rate. The EXIT trap repeats the idempotent service start.
+# Restart the graph before leaving. The kernel now synchronizes the hardware
+# clock whenever PipeWire or ALSA prepares a PCM format, so no CLI sync follows.
 restart_user_audio
-if [[ -x $project_dir/target/release/octa ]]; then
-	for attempt in 1 2 3; do
-		if "$project_dir/target/release/octa" --device octa sync; then
-			break
-		fi
-		if (( attempt == 3 )); then
-			echo "PipeWire returned slowly; run 'octa --device octa sync' once it is ready." >&2
-			break
-		fi
-		sleep 2
-	done
-else
-	echo "Warning: desktop CLI is not built; run 'octa --device octa sync' after install." >&2
-fi
 
-echo "Installed and verified paired Roland Capture modules:"
+echo "Installed and verified Roland Capture streaming module:"
 echo "  $audio_target"
-echo "  $midi_target"
+echo "Using the distribution USB-MIDI module: $midi_loaded"
 echo "Previous update modules, when present, are recoverable from: $backup_dir"
 echo "No cron job, systemd unit, or persistent userspace process was installed."

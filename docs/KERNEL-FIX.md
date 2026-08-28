@@ -31,7 +31,7 @@ octa rate 96k   # optional helper (OCTA)
 octa status
 ```
 
-## Dedicated paired driver
+## Streaming-only driver
 
 Build and install the prepared exact-kernel driver tree via:
 
@@ -39,10 +39,10 @@ Build and install the prepared exact-kernel driver tree via:
 ./scripts/install-native-driver.sh
 ```
 
-The installer builds, installs, and reloads both `snd-usb-audio` and the paired
-`snd-usbmidi-lib` transport (stopping PipeWire briefly). Installing only the
-audio module is invalid because the dedicated mixer uses private kernel MIDI
-client symbols. Previous update modules are copied under
+The installer builds and reloads the patched `snd-usb-audio` module while using
+the distribution's unchanged `snd-usbmidi-lib` (stopping PipeWire briefly).
+It contains only format, alternate-setting, clock-synchronization, and MIDI
+cable descriptors; it does not install a kernel Roland mixer. Previous update modules are copied under
 `/var/lib/octa-capture-driver/`; failed reload or verification restores them.
 No reboot is needed. After restarting the user audio graph, the installer runs
 the built CLI sync path so PipeWire's clock and channel profile return to the
