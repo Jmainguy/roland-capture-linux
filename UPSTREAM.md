@@ -141,6 +141,11 @@ precedent of `mixer_scarlett2.c`:
 
 - `mixer_roland_capture.c/.h` owns protocol transport, locking, cached state,
   ALSA control callbacks, model capability tables, and lifecycle cleanup.
+- The transport opens the dedicated control-cable pair through the existing
+  ALSA raw-MIDI kernel API; it adds no USB-MIDI client API, callback interception,
+  or Roland-specific packet handling to `sound/usb/midi.c`.
+- Conventional MIDI cable 0 remains a normal userspace MIDI substream while
+  ALSA exclusive-open semantics reserve only the control substreams.
 - `mixer_quirks.c` contains only the VID/PID dispatch hook.
 - `quirks-table.h`, `quirks.c`, and `implicit.c` continue to handle descriptor,
   rate-start, MIDI endpoint, and streaming behavior.

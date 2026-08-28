@@ -32,30 +32,22 @@ The proposed shape is:
 4. Preserve the normal `usb_mixer_interface` list, disconnect, suspend/resume,
    `snd_device` cleanup, and ALSA control registration paths.
 
-Interface 3 can trigger vendor-mixer creation, but OCTA control SysEx actually
-uses cable 1 of the fixed MIDI endpoint on interface 2. The transport design
-must therefore integrate with or arbitrate the existing USB-MIDI endpoint; the
-interface-3 hook alone does not solve transport ownership. The local RFC
-scaffold establishes lifecycle only and deliberately adds no writable control
-until that endpoint path is implemented.
+Interface 3 triggers vendor-mixer creation, but OCTA control SysEx actually
+uses the fixed MIDI endpoint on interface 2. The control driver opens the
+dedicated host-output and device-input control substreams through ALSA's
+existing in-kernel raw-MIDI API. It does not submit competing USB URBs or add a
+second client interface to the shared USB-MIDI driver.
 
 The verified endpoint masks are asymmetric: host output cables are `0x0005`
 (ordinary MIDI cable 0 plus control cable 2), while device input cables are
-`0x0003` (ordinary MIDI cable 0 plus control cable 1). Current `midi.c` keeps
-its endpoint structures private and forwards received bytes directly to raw
-MIDI substreams, so there is no existing in-kernel client API for the mixer.
-The next RFC slice must add a small opaque USB-MIDI kernel-client interface or
-an equivalent reviewed reservation/callback mechanism for those two control
-cables. It must leave cable 0 exposed as ordinary MIDI and prevent raw userspace
-and the kernel mixer from writing the reserved control cable concurrently.
-
-This ownership boundary should be discussed with ALSA USB maintainers early,
-but it is not a discovery blocker. We will prototype direct kernel ownership of
-the control cable and use controlled pcaps plus targeted Windows-driver
-disassembly to resolve initialization, endpoint arbitration, and any missing
-transactions. Reusing a userspace raw-MIDI file from kernel mixer callbacks is
-not acceptable; the finished kernel path must own the endpoint directly or use
-a reviewed in-kernel arbitration mechanism.
+`0x0003` (ordinary MIDI cable 0 plus control cable 1). Those masks naturally
+produce two raw-MIDI substreams in each direction: conventional MIDI is
+subdevice 0 and the corresponding control cable is subdevice 1. The mixer opens
+subdevice 1 for input and output using `snd_rawmidi_kernel_open()`, so ALSA's
+existing exclusive-open and lifecycle rules reserve only the control paths
+while a transaction or bounded meter session is active.
+Cable 0 remains available to normal MIDI applications without any Roland hook,
+packet interception, RCU callback, or exported API in `sound/usb/midi.c`.
 
 ## Protocol invariants
 
@@ -120,10 +112,12 @@ typed range validation and readback tests.
 ## Development trees
 
 Kernel RFC work lives in `/home/jmainguy/Github/jmainguy/linux-roland`, a
-current-mainline clone. The initial lifecycle/transport RFC now reserves the
-asymmetric control cables, adds an RCU-safe in-kernel USB-MIDI client, assembles
-and validates Roland responses, caches the OCTA full snapshot, and exposes
-eight sensitivity controls with verified-write readback semantics. A mainline
+current-mainline clone. The lifecycle/transport RFC exposes the asymmetric
+control cables as ordinary raw-MIDI substreams and opens the dedicated pair
+through ALSA's existing in-kernel raw-MIDI interface. It assembles and validates
+Roland responses, caches the OCTA full snapshot, and exposes eight sensitivity
+controls with verified-write readback semantics. No changes remain in the
+shared USB-MIDI implementation or header. A mainline
 `W=1` build successfully compiles every `sound/usb` object and links
 `snd-usb-audio.o` plus `snd-usbmidi-lib.o`; kernel `checkpatch` reports zero
 errors or warnings for the dedicated mixer file (with style-level CHECK

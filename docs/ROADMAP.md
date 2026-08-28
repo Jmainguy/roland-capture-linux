@@ -291,9 +291,11 @@ Follow the architecture used by substantial vendor mixers such as Scarlett:
 Deliverable: an upstream-reviewable kernel patch series plus an ALSA-first UI
 backend, with identical readback and safety behavior across both transports.
 
-Current kernel RFC status (2026-08-27): the mainline tree has a dedicated
-Roland mixer lifecycle, exclusive USB-MIDI cable reservation (host cable 2,
-device cable 1), RCU-safe receive callbacks, bounded SysEx transmit, serialized
+Current kernel RFC status (2026-08-28): the mainline tree has a dedicated
+Roland mixer lifecycle that opens the control-cable pair through ALSA's
+existing in-kernel raw-MIDI API. Conventional MIDI cable 0 stays untouched,
+and the implementation adds no callback, packet path, or exported API to the
+shared USB-MIDI driver. It provides bounded SysEx transport, serialized
 full-snapshot RQ1 with model/address/checksum validation, and eight ALSA input
 sensitivity controls. The complete `sound/usb` object set passes a `W=1` build.
 The Fedora backport was built against the exact 7.1.8 and 7.1.10 prepared
