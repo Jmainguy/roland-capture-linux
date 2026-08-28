@@ -6,7 +6,8 @@ normal MIDI exposure. The complete Roland hardware control surface remains in
 this optional desktop application, so ALSA and PipeWire audio do not depend on
 installing it. See [`UPSTREAM.md`](UPSTREAM.md).
 
-Kernel quirk fix (multi-rate alts + vendor rate-on-start) + `octa` CLI for
+Kernel quirk fix (multi-rate alts + vendor rate synchronization during stream
+preparation) + `octa` CLI for
 host-master rate switching and PipeWire sync. Optional ALSA UCM profiles expose
 analog channels independently while grouping Main/Phones, coaxial, and Direct
 Mix left/right paths into practical stereo endpoints in GNOME Settings.

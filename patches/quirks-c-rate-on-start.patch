@@ -43,17 +43,17 @@ index eb1750def..2ca753d73 100644
 +	return 0;
 +}
 +
-+static void roland_capture_set_rate(struct snd_usb_endpoint *ep)
++static void roland_capture_set_rate(struct snd_usb_substream *subs)
 +{
-+	struct snd_usb_audio *chip = ep->chip;
++	struct snd_usb_audio *chip = subs->stream->chip;
 +	struct usb_device *dev = chip->dev;
-+	u32 rate = ep->cur_rate;
++	u32 rate = subs->data_endpoint->cur_rate;
 +	u32 current_rate;
 +	u8 data[4];
 +	int err;
 +	int i;
 +
-+	/* Serialize playback and capture endpoint starts during a clock change. */
++	/* Serialize playback and capture preparation during a clock change. */
 +	guard(mutex)(&chip->mutex);
 +	err = roland_capture_read_rate(dev, &current_rate);
 +	if (!err && current_rate == rate)
@@ -86,15 +86,14 @@ index eb1750def..2ca753d73 100644
  void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
  			      const struct audioformat *fmt)
  {
-@@ -1930,6 +2000,11 @@ int snd_usb_select_mode_quirk(struct snd_usb_audio *chip,
+@@ -1883,6 +1953,10 @@ void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
+ 	case USB_ID(0x2a39, 0x3fa0): /* RME Digiface USB (alternate) */
+ 		rme_digiface_set_format_quirk(subs);
+ 		break;
++	case USB_ID(0x0582, 0x0120): /* Roland OCTA-CAPTURE */
++	case USB_ID(0x0582, 0x012f): /* Roland QUAD-CAPTURE */
++		roland_capture_set_rate(subs);
++		break;
+ 	}
+ }
  
- void snd_usb_endpoint_start_quirk(struct snd_usb_endpoint *ep)
- {
-+	if ((ep->chip->usb_id == USB_ID(0x0582, 0x0120) ||
-+	     ep->chip->usb_id == USB_ID(0x0582, 0x012f)) &&
-+	    ep->type == SND_USB_ENDPOINT_TYPE_DATA)
-+		roland_capture_set_rate(ep);
-+
- 	/*
- 	 * "Playback Design" products send bogus feedback data at the start
- 	 * of the stream. Ignore them.

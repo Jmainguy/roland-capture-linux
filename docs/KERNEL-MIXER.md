@@ -9,7 +9,7 @@
 ## Superseded design decision
 
 Keep OCTA/QUAD audio streaming inside `snd-usb-audio`. Descriptor fixes,
-alternate settings, rate-on-start, MIDI cable discovery, and Roland implicit
+alternate settings, rate synchronization during stream preparation, MIDI cable discovery, and Roland implicit
 feedback remain quirks because they adapt non-standard hardware to the generic
 USB-audio engine.
 

@@ -5,7 +5,7 @@ exec "$(dirname -- "${BASH_SOURCE[0]}")/install-native-driver.sh" "$@"
 # Patches (under patches/):
 #   quirks-table-octa-quad.patch  — OCTA S24_3LE + multi-rate; QUAD S32_LE + multi-rate
 #   quirks-midi-mixer-cables.patch — expose OCTA's asymmetric mixer MIDI cables
-#   quirks-c-rate-on-start.patch  — vendor sample-rate SET when PCM endpoints start
+#   quirks-c-rate-on-start.patch  — vendor sample-rate SET during PCM preparation
 set -euo pipefail
 shopt -s nullglob
 
@@ -180,7 +180,7 @@ apply_patches() {
 	done
 
 	if ! grep -q 'octa_capture_set_rate' sound/usb/quirks.c; then
-		echo "rate-on-start quirk missing from quirks.c after patch" >&2
+		echo "rate synchronization quirk missing from quirks.c after patch" >&2
 		exit 1
 	fi
 	if ! grep -q '0x012f' sound/usb/quirks-table.h || ! grep -q '192000' sound/usb/quirks-table.h; then
@@ -218,4 +218,4 @@ run_root depmod -a
 
 echo "Installed /lib/modules/$KVER/updates/snd-usb-audio.ko"
 reload_snd_usb_audio
-echo "OCTA/QUAD: multi-rate alts + rate-on-start. Optional: cargo install --path .  # octa CLI"
+echo "OCTA/QUAD: multi-rate alts + rate synchronization. Optional: cargo install --path .  # octa CLI"

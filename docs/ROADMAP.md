@@ -181,7 +181,7 @@ tested device/firmware/kernel combination.
 Follow `UPSTREAM.md` while rebasing against the current Linux sound tree:
 
 1. Submit the minimal OCTA `S24_3LE` correction.
-2. Submit alternate-setting and vendor rate-on-start support for OCTA and QUAD.
+2. Submit alternate-setting and vendor rate synchronization support for OCTA and QUAD.
 3. Submit the OCTA stereo-pair profile to `alsa-ucm-conf`.
 4. Address review without coupling upstream kernel behavior to the optional
    userspace CLI.
