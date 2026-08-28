@@ -49,6 +49,24 @@ pub fn configure_channels_for_rate(kind: Kind, hz: u32) -> Result<()> {
         "        audio.rate = {hz}\n\
                  node.lock-rate = true\n"
     );
+    let profile_play_layout = if hz == 192000 {
+        format!(
+            "        audio.channels = {play_ch}\n\
+                     audio.position = {play_pos}\n\
+                     channelmix.lock-channels = true\n"
+        )
+    } else {
+        String::new()
+    };
+    let profile_cap_layout = if hz == 192000 {
+        format!(
+            "        audio.channels = {cap_ch}\n\
+                     audio.position = {cap_pos}\n\
+                     channelmix.lock-channels = true\n"
+        )
+    } else {
+        String::new()
+    };
 
     let out_match = match kind {
         Kind::Octa => format!(
@@ -114,6 +132,7 @@ pub fn configure_channels_for_rate(kind: Kind, hz: u32) -> Result<()> {
              actions = {{\n\
                update-props = {{\n\
                  {rate_pin}\
+                 {profile_play_layout}\
                  {suspend}\
          {extra}\
                }}\n\
@@ -126,6 +145,7 @@ pub fn configure_channels_for_rate(kind: Kind, hz: u32) -> Result<()> {
              actions = {{\n\
                update-props = {{\n\
                  {rate_pin}\
+                 {profile_cap_layout}\
                  {suspend}\
          {extra}\
                }}\n\

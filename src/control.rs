@@ -31,8 +31,6 @@ pub fn set_sample_rate(kind: Kind, hz: u32) -> Result<()> {
         }
     }
 
-    usb_rate::set_hardware_rate(kind, hz)?;
-    confirm_rate(kind, hz)?;
     apply_pipewire(kind, hz)?;
     confirm_rate(kind, hz)
 }
