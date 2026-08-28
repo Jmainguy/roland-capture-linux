@@ -1,0 +1,86 @@
+00300100  0060              LOAD R0 = 0x0
+00300102  003c              MOVE LC0 = R0
+00300104  183c              MOVE LC1 = R0
+00300106  2036              MOVE L0 = R0
+00300108  2836              MOVE L1 = R0
+0030010a  3036              MOVE L2 = R0
+0030010c  3836              MOVE L3 = R0
+0030010e  08e10410          LOAD P0.L = 0x1004
+00300112  48e1e0ff          LOAD P0.H = 0xffe0
+00300116  0093              STORE [P0] = R0
+00300118  08e10400          LOAD P0.L = 0x4
+0030011c  48e1e0ff          LOAD P0.H = 0xffe0
+00300120  0093              STORE [P0] = R0
+00300122  48e1b0ff          LOAD P0.H = 0xffb0
+00300126  08e10010          LOAD P0.L = 0x1000
+0030012a  7032              MOVE SP = P0
+0030012c  a66f              ADD SP += -0xc
+0030012e  00e38b77          CALL 0x0030f044
+00300132  666c              ADD SP += 0xc
+00300134  0802              MOVE CC = R0
+00300136  0018              IF CC JUMP 0x00300136
+00300138  08e10000          LOAD P0.L = 0x0
+0030013c  48e1b0ff          LOAD P0.H = 0xffb0
+00300140  0793              STORE [P0] = R7
+00300142  c231              MOVE R0 = SYSCFG
+00300144  2160              LOAD R1 = 0x4
+00300146  0856              OR R0 = R0 | R1
+00300148  103e              MOVE SYSCFG = R0
+0030014a  48e1e0ff          LOAD P0.H = 0xffe0
+0030014e  08e10820          LOAD P0.L = 0x2008
+00300152  2168              LOAD P1 = 0x4
+00300154  40e1a0ff          LOAD R0.H = 0xffa0
+00300158  00e11a15          LOAD R0.L = 0x151a
+0030015c  0888              STORE [P0 ++ P1] = R0
+0030015e  40e1a0ff          LOAD R0.H = 0xffa0
+00300162  00e1d012          LOAD R0.L = 0x12d0
+00300166  0888              STORE [P0 ++ P1] = R0
+00300168  085a              ADD P0 = P0 + P1
+0030016a  40e1a0ff          LOAD R0.H = 0xffa0
+0030016e  00e1d612          LOAD R0.L = 0x12d6
+00300172  0888              STORE [P0 ++ P1] = R0
+00300174  40e1a0ff          LOAD R0.H = 0xffa0
+00300178  00e1d812          LOAD R0.L = 0x12d8
+0030017c  0888              STORE [P0 ++ P1] = R0
+0030017e  40e1a0ff          LOAD R0.H = 0xffa0
+00300182  00e1de12          LOAD R0.L = 0x12de
+00300186  0888              STORE [P0 ++ P1] = R0
+00300188  40e1a0ff          LOAD R0.H = 0xffa0
+0030018c  00e12813          LOAD R0.L = 0x1328
+00300190  40e1a0ff          LOAD R0.H = 0xffa0
+00300194  0888              STORE [P0 ++ P1] = R0
+00300196  40e1a0ff          LOAD R0.H = 0xffa0
+0030019a  00e17213          LOAD R0.L = 0x1372
+0030019e  0888              STORE [P0 ++ P1] = R0
+003001a0  40e1a0ff          LOAD R0.H = 0xffa0
+003001a4  00e1bc13          LOAD R0.L = 0x13bc
+003001a8  0888              STORE [P0 ++ P1] = R0
+003001aa  40e1a0ff          LOAD R0.H = 0xffa0
+003001ae  00e19014          LOAD R0.L = 0x1490
+003001b2  0888              STORE [P0 ++ P1] = R0
+003001b4  40e1a0ff          LOAD R0.H = 0xffa0
+003001b8  00e1de14          LOAD R0.L = 0x14de
+003001bc  0888              STORE [P0 ++ P1] = R0
+003001be  40e1a0ff          LOAD R0.H = 0xffa0
+003001c2  00e1e414          LOAD R0.L = 0x14e4
+003001c6  0888              STORE [P0 ++ P1] = R0
+003001c8  40e1a0ff          LOAD R0.H = 0xffa0
+003001cc  00e1ea14          LOAD R0.L = 0x14ea
+003001d0  0888              STORE [P0 ++ P1] = R0
+003001d2  40e13000          LOAD R0.H = 0x30
+003001d6  00e1f401          LOAD R0.L = 0x1f4
+003001da  0888              STORE [P0 ++ P1] = R0
+003001dc  4ae13000          LOAD P2.H = 0x30
+003001e0  0ae10802          LOAD P2.L = 0x208
+003001e4  5a3e              MOVE RETI = P2
+003001e6  2300              CSYNC
+003001e8  9f00              RAISE 0xf
+003001ea  80e11fc0          LOAD R0 = 0xc01f
+003001ee  4000              STI R0
+003001f0  2300              CSYNC
+003001f2  1100              RTI
+003001f4  a66f              ADD SP += -0xc
+003001f6  03e31172          CALL 0x0036e618
+003001fa  0060              LOAD R0 = 0x0
+003001fc  0160              LOAD R1 = 0x0
+003001fe  01e3d92b          CALL 0x003259b0

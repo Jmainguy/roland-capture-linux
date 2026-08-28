@@ -1,0 +1,245 @@
+0031d74c  00e80500          LINK 0x14
+0031d750  35bd              STORE [SP + 0x10] = P5
+0031d752  0de11880          LOAD P5.L = 0x8018
+0031d756  4de1a0ff          LOAD P5.H = 0xffa0
+0031d75a  f5bc              STORE [SP + 0xc] = P5
+0031d75c  2260              LOAD R2 = 0x4
+0031d75e  a160              LOAD R1 = 0x14
+0031d760  00e18405          LOAD R0.L = 0x584
+0031d764  40e1b0ff          LOAD R0.H = 0xffb0
+0031d768  00e36a42          CALL 0x00325c3c
+0031d76c  f5bc              STORE [SP + 0xc] = P5
+0031d76e  2260              LOAD R2 = 0x4
+0031d770  a160              LOAD R1 = 0x14
+0031d772  00e1d405          LOAD R0.L = 0x5d4
+0031d776  40e1b0ff          LOAD R0.H = 0xffb0
+0031d77a  00e36142          CALL 0x00325c3c
+0031d77e  f5bc              STORE [SP + 0xc] = P5
+0031d780  2260              LOAD R2 = 0x4
+0031d782  1160              LOAD R1 = 0x2
+0031d784  00e17c05          LOAD R0.L = 0x57c
+0031d788  40e1b0ff          LOAD R0.H = 0xffb0
+0031d78c  00e35842          CALL 0x00325c3c
+0031d790  09e10c80          LOAD P1.L = 0x800c
+0031d794  49e1a0ff          LOAD P1.H = 0xffa0
+0031d798  f1bc              STORE [SP + 0xc] = P1
+0031d79a  1260              LOAD R2 = 0x2
+0031d79c  4160              LOAD R1 = 0x8
+0031d79e  00e12406          LOAD R0.L = 0x624
+0031d7a2  40e1b0ff          LOAD R0.H = 0xffb0
+0031d7a6  00e34b42          CALL 0x00325c3c
+0031d7aa  09e10080          LOAD P1.L = 0x8000
+0031d7ae  49e1a0ff          LOAD P1.H = 0xffa0
+0031d7b2  f1bc              STORE [SP + 0xc] = P1
+0031d7b4  1260              LOAD R2 = 0x2
+0031d7b6  4160              LOAD R1 = 0x8
+0031d7b8  00e13406          LOAD R0.L = 0x634
+0031d7bc  40e1b0ff          LOAD R0.H = 0xffb0
+0031d7c0  00e33e42          CALL 0x00325c3c
+0031d7c4  78ac              LOAD P0 = [FP + 0x4]
+0031d7c6  35ad              LOAD P5 = [SP + 0x10]
+0031d7c8  01e80000          UNLINK
+0031d7cc  5000              JUMP (P0)
+0031d7d0  00e80000          LINK 0x0
+0031d7d4  09e12c91          LOAD P1.L = 0x912c
+0031d7d8  49e14100          LOAD P1.H = 0x41
+0031d7dc  0860              LOAD R0 = 0x1
+0031d7de  089b              STORE B [P1] = R0
+0031d7e0  78ac              LOAD P0 = [FP + 0x4]
+0031d7e2  01e80000          UNLINK
+0031d7e6  5000              JUMP (P0)
+0031d7fc  00e80000          LINK 0x0
+0031d800  f305              PUSH [--SP] = (R7:6,P5:3)
+0031d802  a66f              ADD SP += -0xc
+0031d804  b0b2              STORE [SP + 0x28] = R0
+0031d806  b1ae              LOAD P1 = [SP + 0x28]
+0031d808  48a1              LOAD R0 = [P1 + 0x14]
+0031d80a  900c              CC = R0 < 0x2
+0031d80c  f0b2              STORE [SP + 0x2c] = R0
+0031d80e  5410              IF !CC JUMP 0x0031d8b6
+0031d810  f1ae              LOAD P1 = [SP + 0x2c]
+0031d812  0de1d40e          LOAD P5.L = 0xed4
+0031d816  4de14400          LOAD P5.H = 0x44
+0031d81a  5d32              MOVE P3 = P5
+0031d81c  0e60              LOAD R6 = 0x1
+0031d81e  4d5a              ADD P1 = P5 + P1
+0031d820  0e9b              STORE B [P1] = R6
+0031d822  e36f              ADD P3 += -0x4
+0031d824  0ce13091          LOAD P4.L = 0x9130
+0031d828  4ce14100          LOAD P4.H = 0x41
+0031d82c  1760              LOAD R7 = 0x2
+0031d82e  1898              LOAD R0 = B [P3++] (Z)
+0031d830  000c              CC = R0 == 0x0
+0031d832  0b18              IF CC JUMP 0x0031d848
+0031d834  ff67              ADD R7 += -0x1
+0031d836  070c              CC = R7 == 0x0
+0031d838  646c              ADD P4 += 0xc
+0031d83a  fa13              IF !CC JUMP 0x0031d82e
+0031d83c  666c              ADD SP += 0xc
+0031d83e  78ac              LOAD P0 = [FP + 0x4]
+0031d840  b305              POP (R7:6,P5:3) = [SP++]
+0031d842  01e80000          UNLINK
+0031d846  5000              JUMP (P0)
+0031d848  b1ae              LOAD P1 = [SP + 0x28]
+0031d84a  c9a1              LOAD R1 = [P1 + 0x1c]
+0031d84c  010c              CC = R1 == 0x0
+0031d84e  1018              IF CC JUMP 0x0031d86e
+0031d850  0000              NOP
+0031d852  0000              NOP
+0031d854  0000              NOP
+0031d856  60a0              LOAD R0 = [P4 + 0x4]
+0031d858  0832              MOVE P1 = R0
+0031d85a  6091              LOAD P0 = [P4]
+0031d85c  880c              CC = R0 < 0x1
+0031d85e  0818              IF CC JUMP 0x0031d86e
+0031d860  0000              NOP
+0031d862  f2ae              LOAD P2 = [SP + 0x2c]
+0031d864  a2e00410          LSETUP (0x31d868,0x31d86c) LC0 = P1
+0031d868  4190              LOAD P1 = [P0++]
+0031d86a  4a08              CC = P2 == P1
+0031d86c  2318              IF CC JUMP 0x0031d8b2
+0031d86e  0000              NOP
+0031d870  0000              NOP
+0031d872  0000              NOP
+0031d874  61a0              LOAD R1 = [P4 + 0x4]
+0031d876  0932              MOVE P1 = R1
+0031d878  6091              LOAD P0 = [P4]
+0031d87a  0860              LOAD R0 = 0x1
+0031d87c  890c              CC = R1 < 0x1
+0031d87e  0c18              IF CC JUMP 0x0031d896
+0031d880  0000              NOP
+0031d882  0000              NOP
+0031d884  a2e00710          LSETUP (0x31d888,0x31d892) LC0 = P1
+0031d888  4190              LOAD P1 = [P0++]
+0031d88a  4d5a              ADD P1 = P5 + P1
+0031d88c  0000              NOP
+0031d88e  0899              LOAD R0 = B [P1] (Z)
+0031d890  000c              CC = R0 == 0x0
+0031d892  0e18              IF CC JUMP 0x0031d8ae
+0031d894  0860              LOAD R0 = 0x1
+0031d896  000c              CC = R0 == 0x0
+0031d898  ce1b              IF CC JUMP 0x0031d834
+0031d89a  a0a0              LOAD R0 = [P4 + 0x8]
+0031d89c  0832              MOVE P1 = R0
+0031d89e  9ee6ffff          STORE B [P3 + -0x1] = R6
+0031d8a2  000c              CC = R0 == 0x0
+0031d8a4  c81b              IF CC JUMP 0x0031d834
+0031d8a6  0000              NOP
+0031d8a8  0000              NOP
+0031d8aa  6100              CALL (P1)
+0031d8ac  c42f              JUMP.S 0x0031d834
+0031d8ae  0060              LOAD R0 = 0x0
+0031d8b0  f32f              JUMP.S 0x0031d896
+0031d8b2  a1b0              STORE [P4 + 0x8] = R1
+0031d8b4  dd2f              JUMP.S 0x0031d86e
+0031d8b6  666c              ADD SP += 0xc
+0031d8b8  78ac              LOAD P0 = [FP + 0x4]
+0031d8ba  b305              POP (R7:6,P5:3) = [SP++]
+0031d8bc  01e80000          UNLINK
+0031d8c0  5000              JUMP (P0)
+0031d8c4  00e80000          LINK 0x0
+0031d8c8  f305              PUSH [--SP] = (R7:6,P5:3)
+0031d8ca  a66f              ADD SP += -0xc
+0031d8cc  b0b2              STORE [SP + 0x28] = R0
+0031d8ce  b1ae              LOAD P1 = [SP + 0x28]
+0031d8d0  88a1              LOAD R0 = [P1 + 0x18]
+0031d8d2  900c              CC = R0 < 0x2
+0031d8d4  f0b2              STORE [SP + 0x2c] = R0
+0031d8d6  6810              IF !CC JUMP 0x0031d9a6
+0031d8d8  f1ae              LOAD P1 = [SP + 0x2c]
+0031d8da  0de1dc0e          LOAD P5.L = 0xedc
+0031d8de  4de14400          LOAD P5.H = 0x44
+0031d8e2  0e60              LOAD R6 = 0x1
+0031d8e4  0ce14891          LOAD P4.L = 0x9148
+0031d8e8  4ce14100          LOAD P4.H = 0x41
+0031d8ec  0d5a              ADD P0 = P5 + P1
+0031d8ee  4d32              MOVE P1 = P5
+0031d8f0  e16f              ADD P1 += -0x4
+0031d8f2  31bf              STORE [SP + 0x30] = P1
+0031d8f4  069b              STORE B [P0] = R6
+0031d8f6  1760              LOAD R7 = 0x2
+0031d8f8  33af              LOAD P3 = [SP + 0x30]
+0031d8fa  1898              LOAD R0 = B [P3++] (Z)
+0031d8fc  000c              CC = R0 == 0x0
+0031d8fe  0b18              IF CC JUMP 0x0031d914
+0031d900  ff67              ADD R7 += -0x1
+0031d902  070c              CC = R7 == 0x0
+0031d904  646c              ADD P4 += 0xc
+0031d906  fa13              IF !CC JUMP 0x0031d8fa
+0031d908  666c              ADD SP += 0xc
+0031d90a  78ac              LOAD P0 = [FP + 0x4]
+0031d90c  b305              POP (R7:6,P5:3) = [SP++]
+0031d90e  01e80000          UNLINK
+0031d912  5000              JUMP (P0)
+0031d914  b1ae              LOAD P1 = [SP + 0x28]
+0031d916  c9a1              LOAD R1 = [P1 + 0x1c]
+0031d918  010c              CC = R1 == 0x0
+0031d91a  1018              IF CC JUMP 0x0031d93a
+0031d91c  0000              NOP
+0031d91e  0000              NOP
+0031d920  0000              NOP
+0031d922  60a0              LOAD R0 = [P4 + 0x4]
+0031d924  0832              MOVE P1 = R0
+0031d926  6091              LOAD P0 = [P4]
+0031d928  880c              CC = R0 < 0x1
+0031d92a  0818              IF CC JUMP 0x0031d93a
+0031d92c  0000              NOP
+0031d92e  f2ae              LOAD P2 = [SP + 0x2c]
+0031d930  a2e00410          LSETUP (0x31d934,0x31d938) LC0 = P1
+0031d934  4190              LOAD P1 = [P0++]
+0031d936  4a08              CC = P2 == P1
+0031d938  3518              IF CC JUMP 0x0031d9a2
+0031d93a  0000              NOP
+0031d93c  0000              NOP
+0031d93e  0000              NOP
+0031d940  61a0              LOAD R1 = [P4 + 0x4]
+0031d942  0932              MOVE P1 = R1
+0031d944  6091              LOAD P0 = [P4]
+0031d946  0860              LOAD R0 = 0x1
+0031d948  890c              CC = R1 < 0x1
+0031d94a  0c18              IF CC JUMP 0x0031d962
+0031d94c  0000              NOP
+0031d94e  0000              NOP
+0031d950  a2e00710          LSETUP (0x31d954,0x31d95e) LC0 = P1
+0031d954  4190              LOAD P1 = [P0++]
+0031d956  4d5a              ADD P1 = P5 + P1
+0031d958  0000              NOP
+0031d95a  0899              LOAD R0 = B [P1] (Z)
+0031d95c  000c              CC = R0 == 0x0
+0031d95e  2018              IF CC JUMP 0x0031d99e
+0031d960  0860              LOAD R0 = 0x1
+0031d962  000c              CC = R0 == 0x0
+0031d964  1310              IF !CC JUMP 0x0031d98a
+0031d966  31af              LOAD P1 = [SP + 0x30]
+0031d968  1068              LOAD P0 = 0x2
+0031d96a  a2e00400          LSETUP (0x31d96e,0x31d972) LC0 = P0
+0031d96e  0898              LOAD R0 = B [P1++] (Z)
+0031d970  000c              CC = R0 == 0x0
+0031d972  0a18              IF CC JUMP 0x0031d986
+0031d974  0860              LOAD R0 = 0x1
+0031d976  000c              CC = R0 == 0x0
+0031d978  c41b              IF CC JUMP 0x0031d900
+0031d97a  09e12c91          LOAD P1.L = 0x912c
+0031d97e  49e14100          LOAD P1.H = 0x41
+0031d982  0e9b              STORE B [P1] = R6
+0031d984  be2f              JUMP.S 0x0031d900
+0031d986  0060              LOAD R0 = 0x0
+0031d988  f72f              JUMP.S 0x0031d976
+0031d98a  a0a0              LOAD R0 = [P4 + 0x8]
+0031d98c  0832              MOVE P1 = R0
+0031d98e  9ee6ffff          STORE B [P3 + -0x1] = R6
+0031d992  000c              CC = R0 == 0x0
+0031d994  e91b              IF CC JUMP 0x0031d966
+0031d996  0000              NOP
+0031d998  0000              NOP
+0031d99a  6100              CALL (P1)
+0031d99c  e52f              JUMP.S 0x0031d966
+0031d99e  0060              LOAD R0 = 0x0
+0031d9a0  e12f              JUMP.S 0x0031d962
+0031d9a2  a1b0              STORE [P4 + 0x8] = R1
+0031d9a4  cb2f              JUMP.S 0x0031d93a
+0031d9a6  666c              ADD SP += 0xc
+0031d9a8  78ac              LOAD P0 = [FP + 0x4]
+0031d9aa  b305              POP (R7:6,P5:3) = [SP++]
+0031d9ac  01e80000          UNLINK
+0031d9b0  5000              JUMP (P0)

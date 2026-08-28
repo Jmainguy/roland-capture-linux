@@ -1,0 +1,9 @@
+0031e87c  0832              MOVE P1 = R0
+0031e87e  00e80300          LINK 0xc
+0031e882  48a1              LOAD R0 = [P1 + 0x14]
+0031e884  89a1              LOAD R1 = [P1 + 0x18]
+0031e886  ffe3a7fc          CALL 0x0031e1d4
+0031e88a  78ac              LOAD P0 = [FP + 0x4]
+0031e88c  01e80000          UNLINK
+0031e890  5000              JUMP (P0)
+0031e894  00e80d00          LINK 0x34

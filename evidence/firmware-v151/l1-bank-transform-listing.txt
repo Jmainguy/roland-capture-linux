@@ -1,0 +1,87 @@
+ffa0811c  00e80000          LINK 0x0
+ffa08120  e305              PUSH [--SP] = (R7:4,P5:3)
+ffa08122  04cc1244          SUB|| R2 = R2 - R2 (ns)
+ffa08126  72b2              _STORE [SP + 0x24] = R2
+ffa08128  0000              _NOP
+ffa0812a  0832              MOVE P1 = R0
+ffa0812c  2ce10001          LOAD P4 = 0x100
+ffa08130  4ce13000          LOAD P4.H = 0x30
+ffa08134  1256              OR R0 = R2 | R2
+ffa08136  80ce00a0          LSH|| R0.H = R0.L << 0x0
+ffa0813a  70ae              LOAD P0 = [SP + 0x24]
+ffa0813c  0000              NOP
+ffa0813e  0ae10000          LOAD P2.L = 0x0
+ffa08142  4ae180ff          LOAD P2.H = 0xff80
+ffa08146  2be1fb03          LOAD P3 = 0x3fb
+ffa0814a  445b              ADD P5 = P4 + P0
+ffa0814c  4232              MOVE P0 = P2
+ffa0814e  a2e00230          LSETUP (0xffa08152,0xffa08152) LC0 = P3
+ffa08152  0092              STORE [P0++] = R0
+ffa08154  008c              STORE W [P0] = R0.H
+ffa08156  4a30              MOVE R1 = P2
+ffa08158  25e1ee0f          LOAD R5 = 0xfee
+ffa0815c  26e1ff0f          LOAD R6 = 0xfff
+ffa08160  24e1f000          LOAD R4 = 0xf0
+ffa08164  f86b              LOAD P0 = -0x1
+ffa08166  b2e03200          LSETUP (0xffa0816a,0xffa081ca) LC1 = P0
+ffa0816a  80c6fa81          LSH R0.L = R2.L >> 0x1
+ffa0816e  4048              CC = !BITTST (R0,0x8)
+ffa08170  1030              MOVE R2 = R0
+ffa08172  0910              IF !CC JUMP 0xffa08184
+ffa08174  0000              NOP
+ffa08176  0000              NOP
+ffa08178  0000              NOP
+ffa0817a  0898              LOAD R0 = B [P1++] (Z)
+ffa0817c  22e100ff          LOAD R2 = -0x100
+ffa08180  1056              OR R0 = R0 | R2
+ffa08182  1030              MOVE R2 = R0
+ffa08184  0049              CC = BITTST (R0,0x0)
+ffa08186  0b98              LOAD R3 = B [P1++] (Z)
+ffa08188  2318              IF CC JUMP 0xffa081ce
+ffa0818a  0898              LOAD R0 = B [P1++] (Z)
+ffa0818c  7f60              LOAD R7 = 0xf
+ffa0818e  f855              AND R7 = R0 & R7
+ffa08190  2054              AND R0 = R0 & R4
+ffa08192  1764              ADD R7 += 0x2
+ffa08194  80c62080          LSH R0.L = R0.L << 0x4
+ffa08198  bf42              MOVE R7 = R7.L (X)
+ffa0819a  1856              OR R0 = R0 | R3
+ffa0819c  870c              CC = R7 < 0x0
+ffa0819e  0f64              ADD R7 += 0x1
+ffa081a0  8342              MOVE R3 = R0.L (X)
+ffa081a2  1418              IF CC JUMP 0xffa081ca
+ffa081a4  1732              MOVE P2 = R7
+ffa081a6  a2e01120          LSETUP (0xffa081aa,0xffa081c8) LC0 = P2
+ffa081aa  3354              AND R0 = R3 & R6
+ffa081ac  0150              ADD R0 = R1 + R0
+ffa081ae  1032              MOVE P2 = R0
+ffa081b0  650a              CC = P5 <= P4 (IU)
+ffa081b2  0b64              ADD R3 += 0x1
+ffa081b4  1799              LOAD R7 = B [P2] (Z)
+ffa081b6  0a18              IF CC JUMP 0xffa081ca
+ffa081b8  a842              MOVE R0 = R5.L (X)
+ffa081ba  04cc0800          ADD|| R0 = R1 + R0 (ns)
+ffa081be  279a              _STORE B [P4++] = R7
+ffa081c0  0000              _NOP
+ffa081c2  1032              MOVE P2 = R0
+ffa081c4  0d64              ADD R5 += 0x1
+ffa081c6  7555              AND R5 = R5 & R6
+ffa081c8  179b              STORE B [P2] = R7
+ffa081ca  0000              NOP
+ffa081cc  cd2f              JUMP.S 0xffa08166
+ffa081ce  650a              CC = P5 <= P4 (IU)
+ffa081d0  0b18              IF CC JUMP 0xffa081e6
+ffa081d2  a842              MOVE R0 = R5.L (X)
+ffa081d4  04cc0800          ADD|| R0 = R1 + R0 (ns)
+ffa081d8  239a              _STORE B [P4++] = R3
+ffa081da  0000              _NOP
+ffa081dc  1032              MOVE P2 = R0
+ffa081de  0d64              ADD R5 += 0x1
+ffa081e0  7555              AND R5 = R5 & R6
+ffa081e2  139b              STORE B [P2] = R3
+ffa081e4  f32f              JUMP.S 0xffa081ca
+ffa081e6  78ac              LOAD P0 = [FP + 0x4]
+ffa081e8  70a2              LOAD R0 = [SP + 0x24]
+ffa081ea  a305              POP (R7:4,P5:3) = [SP++]
+ffa081ec  01e80000          UNLINK
+ffa081f0  5000              JUMP (P0)

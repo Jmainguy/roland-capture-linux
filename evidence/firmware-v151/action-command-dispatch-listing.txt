@@ -1,0 +1,79 @@
+0031f18c  00e81300          LINK 0x4c
+0031f190  0ae1ac91          LOAD P2.L = 0x91ac
+0031f194  4ae14100          LOAD P2.H = 0x41
+0031f198  12a0              LOAD R2 = [P2 + 0x0]
+0031f19a  020c              CC = R2 == 0x0
+0031f19c  0810              IF !CC JUMP 0x0031f1ac
+0031f19e  04cc0040          SUB|| R0 = R0 - R0 (ns)
+0031f1a2  78ac              _LOAD P0 = [FP + 0x4]
+0031f1a4  0000              _NOP
+0031f1a6  01e80000          UNLINK
+0031f1aa  5000              JUMP (P0)
+0031f1ac  4f32              MOVE P1 = FP
+0031f1ae  08e1cc93          LOAD P0.L = 0x93cc
+0031f1b2  48e14100          LOAD P0.H = 0x41
+0031f1b6  71b2              STORE [SP + 0x24] = R1
+0031f1b8  016f              ADD P1 += -0x20
+0031f1ba  0190              LOAD R1 = [P0++]
+0031f1bc  0992              STORE [P1++] = R1
+0031f1be  0190              LOAD R1 = [P0++]
+0031f1c0  0992              STORE [P1++] = R1
+0031f1c2  0190              LOAD R1 = [P0++]
+0031f1c4  0992              STORE [P1++] = R1
+0031f1c6  0190              LOAD R1 = [P0++]
+0031f1c8  0992              STORE [P1++] = R1
+0031f1ca  0190              LOAD R1 = [P0++]
+0031f1cc  0992              STORE [P1++] = R1
+0031f1ce  0190              LOAD R1 = [P0++]
+0031f1d0  0992              STORE [P1++] = R1
+0031f1d2  0190              LOAD R1 = [P0++]
+0031f1d4  0992              STORE [P1++] = R1
+0031f1d6  4a30              MOVE R1 = P2
+0031f1d8  22e10801          LOAD R2 = 0x108
+0031f1dc  04cc0a00          ADD|| R0 = R1 + R2 (ns)
+0031f1e0  30b2              _STORE [SP + 0x20] = R0
+0031f1e2  0000              _NOP
+0031f1e4  f0bb              STORE [FP + -0x4] = R0
+0031f1e6  50a0              LOAD R0 = [P2 + 0x4]
+0031f1e8  f0b2              STORE [SP + 0x2c] = R0
+0031f1ea  4230              MOVE R0 = P2
+0031f1ec  4064              ADD R0 += 0x8
+0031f1ee  30b3              STORE [SP + 0x30] = R0
+0031f1f0  3860              LOAD R0 = 0x7
+0031f1f2  4f32              MOVE P1 = FP
+0031f1f4  f0b1              STORE [SP + 0x1c] = R0
+0031f1f6  016e              ADD P1 += -0x40
+0031f1f8  4730              MOVE R0 = FP
+0031f1fa  71bf              STORE [SP + 0x34] = P1
+0031f1fc  0067              ADD R0 += -0x20
+0031f1fe  09e1ae0d          LOAD P1.L = 0xdae
+0031f202  49e1a0ff          LOAD P1.H = 0xffa0
+0031f206  6100              CALL (P1)
+0031f208  78ac              LOAD P0 = [FP + 0x4]
+0031f20a  000c              CC = R0 == 0x0
+0031f20c  01e80000          UNLINK
+0031f210  0002              MOVE R0 = CC
+0031f212  5000              JUMP (P0)
+0031f214  00e80700          LINK 0x1c
+0031f218  f5bc              STORE [SP + 0xc] = P5
+0031f21a  2832              MOVE P5 = R0
+0031f21c  4730              MOVE R0 = FP
+0031f21e  a067              ADD R0 += -0xc
+0031f220  ffe3e8f4          CALL 0x0031dbf0
+0031f224  09e1ac91          LOAD P1.L = 0x91ac
+0031f228  49e14100          LOAD P1.H = 0x41
+0031f22c  08e44400          LOAD R0 = [P1 + 0x110]
+0031f230  2893              STORE [P5] = R0
+0031f232  08e44500          LOAD R0 = [P1 + 0x114]
+0031f236  a8b0              STORE [P5 + 0x8] = R0
+0031f238  b0a1              LOAD R0 = [SP + 0x18]
+0031f23a  28b1              STORE [P5 + 0x10] = R0
+0031f23c  08e44700          LOAD R0 = [P1 + 0x11c]
+0031f240  68b0              STORE [P5 + 0x4] = R0
+0031f242  0860              LOAD R0 = 0x1
+0031f244  e8b0              STORE [P5 + 0xc] = R0
+0031f246  78ac              LOAD P0 = [FP + 0x4]
+0031f248  f5ac              LOAD P5 = [SP + 0xc]
+0031f24a  01e80000          UNLINK
+0031f24e  5000              JUMP (P0)
+0031f250  00e80e00          LINK 0x38

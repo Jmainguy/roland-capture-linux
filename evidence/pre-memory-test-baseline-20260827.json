@@ -1,0 +1,885 @@
+{
+  "schema": 1,
+  "name": "Pre-memory-test baseline 2026-08-27",
+  "model": "OCTA-CAPTURE",
+  "settings": {
+    "preamps": [
+      {
+        "gain": 40,
+        "phantom_power": false,
+        "high_impedance": true,
+        "phase_inverted": true,
+        "low_cut_100_hz": true,
+        "compressor": {
+          "enabled": false,
+          "bypass": true,
+          "stereo_link": false,
+          "gate": 22,
+          "attack": 0,
+          "release": 30,
+          "threshold": 0,
+          "ratio": 6,
+          "output_gain": 74
+        }
+      },
+      {
+        "gain": 100,
+        "phantom_power": false,
+        "high_impedance": false,
+        "phase_inverted": true,
+        "low_cut_100_hz": true,
+        "compressor": {
+          "enabled": false,
+          "bypass": true,
+          "stereo_link": false,
+          "gate": 22,
+          "attack": 0,
+          "release": 30,
+          "threshold": 0,
+          "ratio": 6,
+          "output_gain": 74
+        }
+      },
+      {
+        "gain": 100,
+        "phantom_power": false,
+        "high_impedance": false,
+        "phase_inverted": false,
+        "low_cut_100_hz": false,
+        "compressor": {
+          "enabled": true,
+          "bypass": false,
+          "stereo_link": false,
+          "gate": 0,
+          "attack": 9,
+          "release": 30,
+          "threshold": 30,
+          "ratio": 5,
+          "output_gain": 50
+        }
+      },
+      {
+        "gain": 100,
+        "phantom_power": false,
+        "high_impedance": false,
+        "phase_inverted": false,
+        "low_cut_100_hz": false,
+        "compressor": {
+          "enabled": true,
+          "bypass": false,
+          "stereo_link": false,
+          "gate": 0,
+          "attack": 9,
+          "release": 30,
+          "threshold": 30,
+          "ratio": 5,
+          "output_gain": 50
+        }
+      },
+      {
+        "gain": 100,
+        "phantom_power": false,
+        "high_impedance": false,
+        "phase_inverted": false,
+        "low_cut_100_hz": false,
+        "compressor": {
+          "enabled": true,
+          "bypass": false,
+          "stereo_link": false,
+          "gate": 0,
+          "attack": 9,
+          "release": 30,
+          "threshold": 30,
+          "ratio": 5,
+          "output_gain": 50
+        }
+      },
+      {
+        "gain": 100,
+        "phantom_power": false,
+        "high_impedance": false,
+        "phase_inverted": false,
+        "low_cut_100_hz": false,
+        "compressor": {
+          "enabled": true,
+          "bypass": false,
+          "stereo_link": false,
+          "gate": 0,
+          "attack": 9,
+          "release": 30,
+          "threshold": 30,
+          "ratio": 5,
+          "output_gain": 50
+        }
+      },
+      {
+        "gain": 100,
+        "phantom_power": false,
+        "high_impedance": false,
+        "phase_inverted": false,
+        "low_cut_100_hz": false,
+        "compressor": {
+          "enabled": true,
+          "bypass": false,
+          "stereo_link": false,
+          "gate": 0,
+          "attack": 9,
+          "release": 30,
+          "threshold": 30,
+          "ratio": 5,
+          "output_gain": 50
+        }
+      },
+      {
+        "gain": 100,
+        "phantom_power": false,
+        "high_impedance": false,
+        "phase_inverted": false,
+        "low_cut_100_hz": false,
+        "compressor": {
+          "enabled": true,
+          "bypass": false,
+          "stereo_link": false,
+          "gate": 0,
+          "attack": 9,
+          "release": 30,
+          "threshold": 30,
+          "ratio": 5,
+          "output_gain": 50
+        }
+      }
+    ],
+    "direct_mixers": [
+      {
+        "inputs": [
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          }
+        ],
+        "wave_outputs": [
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          }
+        ],
+        "link_input_output_masters": false,
+        "stereo_link_master": true,
+        "input_master": 63,
+        "input_master_right": 63,
+        "output_stereo_link_master": true,
+        "output_master": 72,
+        "output_master_right": 72,
+        "reverb_return": 72
+      },
+      {
+        "inputs": [
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          }
+        ],
+        "wave_outputs": [
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          }
+        ],
+        "link_input_output_masters": false,
+        "stereo_link_master": true,
+        "input_master": 72,
+        "input_master_right": 72,
+        "output_stereo_link_master": true,
+        "output_master": 72,
+        "output_master_right": 72,
+        "reverb_return": 0
+      },
+      {
+        "inputs": [
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          }
+        ],
+        "wave_outputs": [
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          }
+        ],
+        "link_input_output_masters": false,
+        "stereo_link_master": true,
+        "input_master": 72,
+        "input_master_right": 72,
+        "output_stereo_link_master": true,
+        "output_master": 72,
+        "output_master_right": 72,
+        "reverb_return": 0
+      },
+      {
+        "inputs": [
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": false,
+            "muted": false,
+            "soloed": false,
+            "pan": 0,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          }
+        ],
+        "wave_outputs": [
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": -100,
+            "level": 72,
+            "reverb_send": 0
+          },
+          {
+            "stereo_link": true,
+            "muted": false,
+            "soloed": false,
+            "pan": 100,
+            "level": 72,
+            "reverb_send": 0
+          }
+        ],
+        "link_input_output_masters": false,
+        "stereo_link_master": true,
+        "input_master": 72,
+        "input_master_right": 72,
+        "output_stereo_link_master": true,
+        "output_master": 72,
+        "output_master_right": 72,
+        "reverb_return": 0
+      }
+    ],
+    "patch_bay": [
+      {
+        "WaveOut": 1
+      },
+      {
+        "WaveOut": 2
+      },
+      {
+        "WaveOut": 3
+      },
+      {
+        "WaveOut": 4
+      },
+      {
+        "WaveOut": 5
+      }
+    ],
+    "reverb": {
+      "kind": "Room",
+      "pre_delay": 0,
+      "time": 14
+    },
+    "system": {
+      "lcd_contrast": 10,
+      "auto_sens_duration": "Manual",
+      "vs_expand": false,
+      "digital_input": "Off",
+      "auto_power_off": "Off",
+      "clock_sync": "Internal",
+      "stereo_link_mode": "Individual",
+      "solo_dim": "Off",
+      "auto_sens_automatic": false,
+      "auto_sens_margin_db": 6
+    }
+  }
+}

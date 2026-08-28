@@ -1,0 +1,2 @@
+{"request_frame":"4227","completion_frame":"4228","time_relative":"4.621486000","direction":"out","endpoint":"0x00","request":"3","value":"0x0008","index":"0","length":"4","payload":"40007701","response":null}
+{"request_frame":"4229","completion_frame":"4230","time_relative":"4.621732000","direction":"in","endpoint":"0x80","request":"3","value":"0x0001","index":"0","length":"4","payload":null,"response":"00770101"}

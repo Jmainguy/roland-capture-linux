@@ -1,0 +1,47 @@
+0031e1d4  00e81300          LINK 0x4c
+0031e1d8  4f32              MOVE P1 = FP
+0031e1da  0ae16062          LOAD P2.L = 0x6260
+0031e1de  4ae14300          LOAD P2.H = 0x43
+0031e1e2  30b2              STORE [SP + 0x20] = R0
+0031e1e4  016f              ADD P1 += -0x20
+0031e1e6  1090              LOAD R0 = [P2++]
+0031e1e8  0892              STORE [P1++] = R0
+0031e1ea  1090              LOAD R0 = [P2++]
+0031e1ec  0892              STORE [P1++] = R0
+0031e1ee  1090              LOAD R0 = [P2++]
+0031e1f0  4732              MOVE P0 = FP
+0031e1f2  0892              STORE [P1++] = R0
+0031e1f4  71b2              STORE [SP + 0x24] = R1
+0031e1f6  006e              ADD P0 += -0x40
+0031e1f8  01e1ec0f          LOAD R1.L = 0xfec
+0031e1fc  41e14400          LOAD R1.H = 0x44
+0031e200  70bf              STORE [SP + 0x34] = P0
+0031e202  0132              MOVE P0 = R1
+0031e204  1090              LOAD R0 = [P2++]
+0031e206  0892              STORE [P1++] = R0
+0031e208  1090              LOAD R0 = [P2++]
+0031e20a  0892              STORE [P1++] = R0
+0031e20c  00a0              LOAD R0 = [P0 + 0x0]
+0031e20e  1290              LOAD R2 = [P2++]
+0031e210  f0b2              STORE [SP + 0x2c] = R0
+0031e212  0a92              STORE [P1++] = R2
+0031e214  0860              LOAD R0 = 0x1
+0031e216  22e10401          LOAD R2 = 0x104
+0031e21a  04cc0a06          ADD|| R3 = R1 + R2 (ns)
+0031e21e  f0b1              _STORE [SP + 0x1c] = R0
+0031e220  0000              _NOP
+0031e222  1290              LOAD R2 = [P2++]
+0031e224  2164              ADD R1 += 0x4
+0031e226  4730              MOVE R0 = FP
+0031e228  0a92              STORE [P1++] = R2
+0031e22a  f3bb              STORE [FP + -0x4] = R3
+0031e22c  31b3              STORE [SP + 0x30] = R1
+0031e22e  0067              ADD R0 += -0x20
+0031e230  09e1ae0d          LOAD P1.L = 0xdae
+0031e234  49e1a0ff          LOAD P1.H = 0xffa0
+0031e238  6100              CALL (P1)
+0031e23a  78ac              LOAD P0 = [FP + 0x4]
+0031e23c  000c              CC = R0 == 0x0
+0031e23e  01e80000          UNLINK
+0031e242  0002              MOVE R0 = CC
+0031e244  5000              JUMP (P0)

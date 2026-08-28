@@ -1,0 +1,49 @@
+FUNCTION 00367648 FUN_00367648 success=true
+
+uint FUN_00367648(byte param_1,int param_2)
+
+{
+  byte bVar1;
+  
+  if (DAT_0044771c != 0) {
+    bVar1 = param_1;
+    if (param_2 != 0) {
+      bVar1 = param_1 + DAT_00447720._1_1_;
+      if (param_2 != 1) {
+        bVar1 = param_1 + 0x1a;
+      }
+    }
+    if (0x1a < bVar1) {
+      bVar1 = 0x1a;
+    }
+    DAT_00447720._1_1_ = bVar1;
+    return (uint)bVar1;
+  }
+  return 0xffffffff;
+}
+
+
+END_FUNCTION
+FUNCTION 00367ae8 FUN_00367ae8 success=true
+
+uint FUN_00367ae8(uint param_1,int param_2)
+
+{
+  if (DAT_004487a0 == 0) {
+    return 0xffffffff;
+  }
+  if (param_2 != 0) {
+    if (param_2 != 1) {
+      DAT_004487a4 = 0xfffff;
+    }
+    param_1 = param_1 + DAT_004487a4;
+  }
+  if (0xfffff < param_1) {
+    param_1 = 0xfffff;
+  }
+  DAT_004487a4 = param_1;
+  return param_1;
+}
+
+
+END_FUNCTION

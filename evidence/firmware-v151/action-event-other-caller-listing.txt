@@ -1,0 +1,57 @@
+003136d6  78ac              LOAD P0 = [FP + 0x4]
+003136d8  f7a0              LOAD R7 = [SP + 0xc]
+003136da  01e80000          UNLINK
+003136de  5000              JUMP (P0)
+003136e0  78ac              LOAD P0 = [FP + 0x4]
+003136e2  f7a0              LOAD R7 = [SP + 0xc]
+003136e4  01e80000          UNLINK
+003136e8  0860              LOAD R0 = 0x1
+003136ea  5000              JUMP (P0)
+003136ec  00e42202          LOAD R0 = [P0 + 0x888]
+003136f0  180c              CC = R0 == 0x3
+003136f2  0710              IF !CC JUMP 0x00313700
+003136f4  2060              LOAD R0 = 0x4
+003136f6  00e62202          STORE [P0 + 0x888] = R0
+003136fa  02e37927          CALL 0x003585ec
+003136fe  0320              JUMP.S 0x00313704
+00313700  02e3dc27          CALL 0x003586b8
+00313704  78ac              LOAD P0 = [FP + 0x4]
+00313706  f7a0              LOAD R7 = [SP + 0xc]
+00313708  01e80000          UNLINK
+0031370c  0860              LOAD R0 = 0x1
+0031370e  5000              JUMP (P0)
+00313710  00e42202          LOAD R0 = [P0 + 0x888]
+00313714  880d              CC = R0 < 0x1 (IU)
+00313716  0518              IF CC JUMP 0x00313720
+00313718  080c              CC = R0 == 0x1
+0031371a  2918              IF CC JUMP 0x0031376c
+0031371c  180c              CC = R0 == 0x3
+0031371e  0918              IF CC JUMP 0x00313730
+00313720  02e36627          CALL 0x003585ec
+00313724  78ac              LOAD P0 = [FP + 0x4]
+00313726  f7a0              LOAD R7 = [SP + 0xc]
+00313728  01e80000          UNLINK
+0031372c  0860              LOAD R0 = 0x1
+0031372e  5000              JUMP (P0)
+00313730  00e42302          LOAD R0 = [P0 + 0x88c]
+00313734  000c              CC = R0 == 0x0
+00313736  2160              LOAD R1 = 0x4
+00313738  0410              IF !CC JUMP 0x00313740
+0031373a  01e62202          STORE [P0 + 0x888] = R1
+0031373e  f12f              JUMP.S 0x00313720
+00313740  09e1148f          LOAD P1.L = 0x8f14
+00313744  49e14100          LOAD P1.H = 0x41
+00313748  04cc1244          SUB|| R2 = R2 - R2 (ns)
+0031374c  0f91              _LOAD R7 = [P1]
+0031374e  0000              _NOP
+00313750  00e1c853          LOAD R0.L = 0x53c8
+00313754  40e14400          LOAD R0.H = 0x44
+00313758  02e30818          CALL 0x00356768
+0031375c  0730              MOVE R0 = R7
+0031375e  01e12834          LOAD R1.L = 0x3428
+00313762  41e13100          LOAD R1.H = 0x31
+00313766  00e3135d          CALL 0x0031f18c
+0031376a  db2f              JUMP.S 0x00313720
+0031376c  1060              LOAD R0 = 0x2
+0031376e  00e62202          STORE [P0 + 0x888] = R0
+00313772  d72f              JUMP.S 0x00313720

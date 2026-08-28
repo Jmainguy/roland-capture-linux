@@ -1,0 +1,17 @@
+00320bd4  00e80300          LINK 0xc
+00320bd8  30a2              LOAD R0 = [SP + 0x20]
+00320bda  000c              CC = R0 == 0x0
+00320bdc  0910              IF !CC JUMP 0x00320bee
+00320bde  0160              LOAD R1 = 0x0
+00320be0  3060              LOAD R0 = 0x6
+00320be2  ffe3d5f2          CALL 0x0031f18c
+00320be6  78ac              LOAD P0 = [FP + 0x4]
+00320be8  01e80000          UNLINK
+00320bec  5000              JUMP (P0)
+00320bee  0160              LOAD R1 = 0x0
+00320bf0  2860              LOAD R0 = 0x5
+00320bf2  ffe3cdf2          CALL 0x0031f18c
+00320bf6  78ac              LOAD P0 = [FP + 0x4]
+00320bf8  01e80000          UNLINK
+00320bfc  5000              JUMP (P0)
+00320c00  00e80000          LINK 0x0

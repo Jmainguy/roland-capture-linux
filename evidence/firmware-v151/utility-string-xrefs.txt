@@ -1,0 +1,4 @@
+STRING 20000f00 "EDIROL VS100 booter program / Copyright Roland Corp."
+STRING 20003f00 "EDIROL VS100 loader program / Copyright Roland Corp."
+STRING 20004004 "EDIROL VS100 application program / Copyright Roland Corp."
+STRING 20020004 "EDIROL VS100 application program / Copyright Roland Corp."

@@ -1,0 +1,28 @@
+0036965c  00e80000          LINK 0x0
+00369660  f505              PUSH [--SP] = (R7:6,P5:5)
+00369662  010d              CC = R1 <= 0x0
+00369664  2832              MOVE P5 = R0
+00369666  a66f              ADD SP += -0xc
+00369668  1518              IF CC JUMP 0x00369692
+0036966a  3930              MOVE R7 = R1
+0036966c  e060              LOAD R0 = 0x1c
+0036966e  03e18cb0          LOAD R3.L = 0xb08c
+00369672  43e14100          LOAD R3.H = 0x41
+00369676  8cc210a0          MULT R1 = R2.H * R0.L ,R0 = R2.L * R0.L (fu)
+0036967a  814f              LSHIFT R1 <<= 0x10
+0036967c  0150              ADD R0 = R1 + R0
+0036967e  8351              ADD R6 = R3 + R0
+00369680  ff67              ADD R7 += -0x1
+00369682  82ce06c0          ROT|| R0 = rot R6 by 0
+00369686  2998              _LOAD R1 = B [P5++] (Z)
+00369688  0000              _NOP
+0036968a  00e3de00          CALL 0x00369846
+0036968e  070c              CC = R7 == 0x0
+00369690  f817              IF !CC JUMP 0x00369680 (bp)
+00369692  666c              ADD SP += 0xc
+00369694  78ac              LOAD P0 = [FP + 0x4]
+00369696  b505              POP (R7:6,P5:5) = [SP++]
+00369698  01e80000          UNLINK
+0036969c  5000              JUMP (P0)
+0036969e  0832              MOVE P1 = R0
+003696a0  48aa              LOAD R0 = W [P1 + 0x12] (X)

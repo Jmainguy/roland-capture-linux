@@ -1,0 +1,15 @@
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -1349,8 +1349,10 @@
+ 			},
+ 			{
+ 				QUIRK_DATA_MIDI_FIXED_ENDPOINT(2) {
+-					.out_cables = 0x0001,
+-					.in_cables  = 0x0001
++					/* Cable 0 is conventional MIDI. The OCTA mixer sends
++					 * RQ1/DT1 on cable 2 and replies on cable 1. */
++					.out_cables = 0x0005,
++					.in_cables  = 0x0003
+ 				}
+ 			},
+ 			{ QUIRK_DATA_IGNORE(3) },

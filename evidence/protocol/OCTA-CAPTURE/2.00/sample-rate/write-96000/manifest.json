@@ -1,0 +1,16 @@
+{
+  "model": "OCTA-CAPTURE",
+  "usb_id": "0582:0120",
+  "serial_hash": "bc40ac2bd4611630bb05ec92b293299e8eadb48a7d33fb399b28a98c22ea2ad8",
+  "firmware": "unknown; USB bcdDevice 2.00",
+  "host_os": "Linux",
+  "panel_version": "native octa CLI 0.6.0",
+  "control": "sample-rate write",
+  "initial_value": 96000,
+  "requested_value": 96000,
+  "observed_value": 96000,
+  "sample_rate": 96000,
+  "audio_active": true,
+  "persistence": "live clock; not tested across power cycle in this capture",
+  "notes": "Known-safe reapply observed passively with usbmon; final ALSA/PipeWire and USB readback all 96000 Hz."
+}

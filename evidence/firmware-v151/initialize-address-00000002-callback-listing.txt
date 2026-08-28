@@ -1,0 +1,8 @@
+00320c50  00e80300          LINK 0xc
+00320c54  04cc0942          SUB|| R1 = R1 - R1 (ns)
+00320c58  30a2              _LOAD R0 = [SP + 0x20]
+00320c5a  0000              _NOP
+00320c5c  ffe398f2          CALL 0x0031f18c
+00320c60  78ac              LOAD P0 = [FP + 0x4]
+00320c62  01e80000          UNLINK
+00320c66  5000              JUMP (P0)

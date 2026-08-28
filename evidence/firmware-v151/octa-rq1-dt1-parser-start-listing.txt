@@ -1,0 +1,16 @@
+0031f240  68b0              STORE [P5 + 0x4] = R0
+0031f242  0860              LOAD R0 = 0x1
+0031f244  e8b0              STORE [P5 + 0xc] = R0
+0031f246  78ac              LOAD P0 = [FP + 0x4]
+0031f248  f5ac              LOAD P5 = [SP + 0xc]
+0031f24a  01e80000          UNLINK
+0031f24e  5000              JUMP (P0)
+0031f32e  f96b              LOAD P1 = -0x1
+0031f330  a2e01c10          LSETUP (0x31f334,0x31f368) LC0 = P1
+0031f334  2899              LOAD R0 = B [P5] (Z)
+0031f336  6854              AND R1 = R0 & R5
+0031f338  0130              MOVE R0 = R1
+0031f33a  e067              ADD R0 += -0x4
+0031f33c  a00d              CC = R0 < 0x4 (IU)
+0031f33e  0f10              IF !CC JUMP 0x0031f35c
+0031f340  0000              NOP

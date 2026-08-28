@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Roland Capture Control
+GenericName=Audio Interface Control Panel
+Comment=Configure Roland OCTA-CAPTURE and QUAD-CAPTURE audio interfaces
+Exec=@EXEC@
+Icon=io.github.jmainguy.OctaCaptureControl
+Terminal=false
+Categories=AudioVideo;Audio;Mixer;
+Keywords=Roland;OCTA-CAPTURE;QUAD-CAPTURE;audio;mixer;
+StartupNotify=true
+StartupWMClass=octa-control

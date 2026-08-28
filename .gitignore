@@ -1,0 +1,48 @@
+# Kernel build artifacts
+/tmp/kernel-build/
+# Rust
+/target/
+/tmp/
+evidence/**/*.pcap
+evidence/**/*.pcapng
+
+# Local captures and bulk raw traces (derived findings live in docs/evidence)
+/evidence/incoming/
+/kernel-module-backup-*/
+
+# Vendor firmware, drivers, manuals, and compiled artifacts
+*.zip
+*.7z
+*.rar
+*.exe
+*.dll
+*.sys
+*.ko
+*.ko.*
+*.bin
+*.dat
+*.mid
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.o
+*.a
+*.so
+*.rlib
+
+# Local tooling and transient output
+__pycache__/
+*.py[cod]
+.checkpatch-*
+/OUTPUT
+
+# Credentials and machine-local configuration
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*
+secrets*

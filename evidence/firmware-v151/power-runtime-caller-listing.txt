@@ -1,0 +1,50 @@
+00302f38  78ac              LOAD P0 = [FP + 0x4]
+00302f3a  01e80000          UNLINK
+00302f3e  5000              JUMP (P0)
+00302f40  0860              LOAD R0 = 0x1
+00302f42  10e6ffff          STORE [P2 + -0x4] = R0
+00302f46  0060              LOAD R0 = 0x0
+00302f48  1093              STORE [P2] = R0
+00302f4a  00e365e5          CALL 0x0031fa14
+00302f4e  78ac              LOAD P0 = [FP + 0x4]
+00302f50  01e80000          UNLINK
+00302f54  5000              JUMP (P0)
+00302f56  0260              LOAD R2 = 0x0
+00302f58  12e6ffff          STORE [P2 + -0x4] = R2
+00302f5c  1293              STORE [P2] = R2
+00302f5e  b960              LOAD R1 = 0x17
+00302f60  00e1c853          LOAD R0.L = 0x53c8
+00302f64  40e14400          LOAD R0.H = 0x44
+00302f68  02e3009c          CALL 0x00356768
+00302f6c  78ac              LOAD P0 = [FP + 0x4]
+00302f6e  01e80000          UNLINK
+00302f72  5000              JUMP (P0)
+00302f74  0160              LOAD R1 = 0x0
+00302f76  11b0              STORE [P2 + 0x0] = R1
+00302f78  00e3724f          CALL 0x0030ce5c
+00302f7c  78ac              LOAD P0 = [FP + 0x4]
+00302f7e  01e80000          UNLINK
+00302f82  5000              JUMP (P0)
+00302f84  0160              LOAD R1 = 0x0
+00302f86  11e6ffff          STORE [P2 + -0x4] = R1
+00302f8a  1193              STORE [P2] = R1
+00302f8c  00e3504f          CALL 0x0030ce2c
+00302f90  78ac              LOAD P0 = [FP + 0x4]
+00302f92  01e80000          UNLINK
+00302f96  5000              JUMP (P0)
+00302f98  0860              LOAD R0 = 0x1
+00302f9a  10b0              STORE [P2 + 0x0] = R0
+00302f9c  78ac              LOAD P0 = [FP + 0x4]
+00302f9e  01e80000          UNLINK
+00302fa2  5000              JUMP (P0)
+00302fa4  0060              LOAD R0 = 0x0
+00302fa6  10b0              STORE [P2 + 0x0] = R0
+00302fa8  00e336e5          CALL 0x0031fa14
+00302fac  78ac              LOAD P0 = [FP + 0x4]
+00302fae  01e80000          UNLINK
+00302fb2  5000              JUMP (P0)
+00302fb4  a00d              CC = R0 < 0x4 (IU)
+00302fb6  00e80300          LINK 0xc
+00302fba  0910              IF !CC JUMP 0x00302fcc
+00302fbc  0832              MOVE P1 = R0
+00302fbe  08e104c7          LOAD P0.L = 0xc704

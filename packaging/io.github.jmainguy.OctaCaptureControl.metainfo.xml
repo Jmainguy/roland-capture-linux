@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.jmainguy.OctaCaptureControl</id>
+  <name>Roland Capture Control</name>
+  <summary>Control Roland OCTA-CAPTURE and QUAD-CAPTURE audio interfaces</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <developer id="io.github.jmainguy">
+    <name>Jonathan Mainguy</name>
+  </developer>
+  <description>
+    <p>
+      A native Linux control panel for Roland OCTA-CAPTURE and QUAD-CAPTURE
+      audio interfaces. It provides device discovery, sample-rate control,
+      diagnostics, and protocol-backed hardware settings.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.github.jmainguy.OctaCaptureControl.desktop</launchable>
+  <provides>
+    <binary>octa-control</binary>
+  </provides>
+  <categories>
+    <category>AudioVideo</category>
+    <category>Audio</category>
+  </categories>
+  <url type="homepage">https://github.com/jmainguy/octa</url>
+  <content_rating type="oars-1.1" />
+</component>

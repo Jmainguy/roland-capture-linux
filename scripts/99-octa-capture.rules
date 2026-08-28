@@ -1,0 +1,3 @@
+# OCTA-CAPTURE / QUAD-CAPTURE: audio-group access for vendor rate control
+SUBSYSTEM=="usb", ATTR{idVendor}=="0582", ATTR{idProduct}=="0120", MODE="0660", GROUP="audio"
+SUBSYSTEM=="usb", ATTR{idVendor}=="0582", ATTR{idProduct}=="012f", MODE="0660", GROUP="audio"

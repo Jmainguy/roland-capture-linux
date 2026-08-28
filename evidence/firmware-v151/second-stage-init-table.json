@@ -1,0 +1,118 @@
+{
+  "descriptor_count": 10,
+  "descriptors": [
+    {
+      "argument": 0,
+      "byte_count": 4113,
+      "descriptor_offset": 9132,
+      "flags": 66,
+      "index": 0,
+      "mode": 1,
+      "source_offset": 9148,
+      "stored_byte_count": 0,
+      "target_address": 4286578688
+    },
+    {
+      "argument": 0,
+      "byte_count": 2836,
+      "descriptor_offset": 9148,
+      "flags": 2,
+      "index": 1,
+      "mode": 0,
+      "source_offset": 9164,
+      "stored_byte_count": 2836,
+      "target_address": 4286582804
+    },
+    {
+      "argument": 1,
+      "byte_count": 96,
+      "descriptor_offset": 12000,
+      "flags": 194,
+      "index": 2,
+      "mode": 3,
+      "source_offset": 12016,
+      "stored_byte_count": 4,
+      "target_address": 4286585640
+    },
+    {
+      "argument": 0,
+      "byte_count": 186,
+      "descriptor_offset": 12020,
+      "flags": 2,
+      "index": 3,
+      "mode": 0,
+      "source_offset": 12036,
+      "stored_byte_count": 188,
+      "target_address": 4286585736
+    },
+    {
+      "argument": 1,
+      "byte_count": 38,
+      "descriptor_offset": 12224,
+      "flags": 194,
+      "index": 4,
+      "mode": 3,
+      "source_offset": 12240,
+      "stored_byte_count": 4,
+      "target_address": 4286585922
+    },
+    {
+      "argument": 0,
+      "byte_count": 192,
+      "descriptor_offset": 12244,
+      "flags": 2,
+      "index": 5,
+      "mode": 0,
+      "source_offset": 12260,
+      "stored_byte_count": 192,
+      "target_address": 4286585960
+    },
+    {
+      "argument": 1,
+      "byte_count": 512,
+      "descriptor_offset": 12452,
+      "flags": 194,
+      "index": 6,
+      "mode": 3,
+      "source_offset": 12468,
+      "stored_byte_count": 4,
+      "target_address": 4286586152
+    },
+    {
+      "argument": 0,
+      "byte_count": 51,
+      "descriptor_offset": 12472,
+      "flags": 2,
+      "index": 7,
+      "mode": 0,
+      "source_offset": 12488,
+      "stored_byte_count": 52,
+      "target_address": 4286586664
+    },
+    {
+      "argument": 0,
+      "byte_count": 1052,
+      "descriptor_offset": 12540,
+      "flags": 66,
+      "index": 8,
+      "mode": 1,
+      "source_offset": 12556,
+      "stored_byte_count": 0,
+      "target_address": 4286586716
+    },
+    {
+      "argument": 0,
+      "byte_count": 498,
+      "descriptor_offset": 12556,
+      "flags": 2,
+      "index": 9,
+      "mode": 0,
+      "source_offset": 12572,
+      "stored_byte_count": 500,
+      "target_address": 4288708608
+    }
+  ],
+  "firmware_size": 1048576,
+  "pointer_offset": 9120,
+  "table_address": 536880036
+}
