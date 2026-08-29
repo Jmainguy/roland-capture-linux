@@ -1,5 +1,5 @@
 diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 0a3d39b83..7db0222e7 100644
+index dd02c6294edf..a1a33f11de4a 100644
 --- a/sound/usb/quirks-table.h
 +++ b/sound/usb/quirks-table.h
 @@ -1227,15 +1227,15 @@ YAMAHA_DEVICE(0x7010, "UB99"),

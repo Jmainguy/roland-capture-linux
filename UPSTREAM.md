@@ -29,32 +29,29 @@ generic USB-audio lifecycle files belong in the kernel series.
 
 Prepare reviewable commits against the current sound tree:
 
-1. **ALSA: usb-audio: Fix sample format for Roland OCTA-CAPTURE**
+1. **ALSA: usb-audio: add Roland OCTA-CAPTURE multirate support**
 
    Change the existing 44.1 kHz playback and capture entries from
    `SNDRV_PCM_FMTBIT_S32_LE` to `SNDRV_PCM_FMTBIT_S24_3LE`. Correct the
-   existing `OCTO-CAPTURE` typo. This patch should stand alone and is the
-   stable-backport candidate.
+   existing `OCTO-CAPTURE` typo and add the verified 48, 96 and 192 kHz
+   alternate settings.
 
-2. **ALSA: usb-audio: Add Roland OCTA/QUAD-CAPTURE sample rates**
-
-   Add one fixed format entry per USB alternate setting. Preserve the verified
-   192 kHz channel reductions: OCTA 4/4 and QUAD 2/2.
-
-3. **ALSA: usb-audio: Set Roland Capture clock when starting PCM**
-
-   Read the current vendor clock, write only when it differs, and poll for the
-   selected rate before streaming begins. There is no module parameter or
-   dependency on the userspace application.
-
-4. **ALSA: usb-audio: Expose OCTA-CAPTURE control MIDI cables**
+2. **ALSA: usb-audio: expose OCTA-CAPTURE control MIDI cables**
 
    Expose the verified asymmetric masks, host output `0x0005` and device input
    `0x0003`. Cable 0 remains conventional MIDI. The extra cables allow the
    optional userspace panel to work through normal raw-MIDI/ALSA sequencing.
 
-If maintainers prefer fewer commits, 2 and 3 can be one series, but the format
-correction should remain independently reviewable.
+3. **ALSA: usb-audio: add Roland QUAD-CAPTURE multirate support**
+
+   Add the verified 48, 96 and 192 kHz alternate settings while preserving the
+   device's two-channel playback and capture reduction at 192 kHz.
+
+4. **ALSA: usb-audio: set Roland Capture rate during stream preparation**
+
+   Read the current vendor clock, write only when it differs, and poll for the
+   selected rate before streaming begins. There is no module parameter or
+   dependency on the userspace application.
 
 ## Expected operation without the application
 
@@ -91,12 +88,11 @@ is reduced by the hardware.
 - Strict `checkpatch`: zero errors, warnings, or checks.
 - Fedora 7.1.10 reduced module: hot-loaded with the stock
   `snd-usbmidi-lib` and both devices enumerated correctly.
-- QUAD-CAPTURE: simultaneous 4-channel playback and 6-channel capture at
-  96 kHz used altsetting 3; vendor readback confirmed 96 kHz, then the device
-  was restored to 48 kHz.
-- OCTA-CAPTURE: 48 kHz playback/capture topology is intact. Its 96 kHz test was
-  intentionally unavailable while locked to the attached QUAD's 48 kHz coaxial
-  clock; this is an external-clock constraint, not claimed as a passing rate test.
+- OCTA-CAPTURE and QUAD-CAPTURE: full-duplex streaming passed at 44.1, 48, 96
+  and 192 kHz on physical units, including the reduced channel layouts at
+  192 kHz.
+- OCTA-CAPTURE external digital clocking passed at every supported digital-I/O
+  rate: 44.1, 48 and 96 kHz. The device disables digital I/O at 192 kHz.
 
 - [ ] Rebase on the current sound maintainer tree
 - [ ] One logical change per commit

@@ -109,9 +109,10 @@ approximately 1 kHz:
 
 The experimental kernel-mixer prototype owned this endpoint continuously and
 exposed decoded clock telemetry during protocol validation. That prototype is
-not part of the upstream plan. The desktop UI and diagnostic CLI retain their
-userspace telemetry path, while the reduced kernel change handles only the
-vendor sample-rate transaction needed before PCM streaming.
+not part of the upstream plan. The endpoint is owned by `snd-usb-audio`, so the
+reduced upstream-oriented installation does not present clock source or lock
+state in userspace. The reduced kernel change handles only the vendor
+sample-rate transaction needed before PCM streaming.
 
 `scripts/verify-clock-state.sh` provides the remaining read-only physical
 acceptance test. It requires ten identical live ALSA samples and can separately

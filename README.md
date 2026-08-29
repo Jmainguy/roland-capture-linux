@@ -226,10 +226,10 @@ Headphones follow the OUTPUT 1–2 patch as well. Patch bay is unavailable at
 
 - **Host master (normal):** `octa rate …` or app/PipeWire opens at a rate → kernel quirk SETs the device.
 - **Panel follow (OCTA):** while open, the desktop control panel polls the live
-  hardware rate and full mixer state, follows device-originated changes, and
-  reports decoded internal/external clock and lock state from the kernel-owned
-  telemetry endpoint. `octa unlock` and `octa sync` remain available as manual
-  diagnostic workflows.
+  hardware rate and full mixer state and follows device-originated changes.
+  Exact internal/external lock telemetry was proven with an experimental
+  kernel prototype but is not exposed by the reduced upstream-oriented driver.
+  `octa unlock` and `octa sync` remain available as manual diagnostic workflows.
 
 Vendor USB control (same on OCTA and QUAD):
 
@@ -246,4 +246,4 @@ targeted driver-research plan, see [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## License
 
-MIT
+GNU General Public License v2.0 only (`GPL-2.0-only`)
