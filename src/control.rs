@@ -31,8 +31,31 @@ pub fn set_sample_rate(kind: Kind, hz: u32) -> Result<()> {
         }
     }
 
-    apply_pipewire(kind, hz)?;
-    confirm_rate(kind, hz)
+    if let Err(error) = apply_pipewire(kind, hz).and_then(|()| confirm_rate(kind, hz)) {
+        return recover_external_rate(kind, hz, error);
+    }
+    Ok(())
+}
+
+/// A digital source can keep the OCTA at its external rate while rejecting a
+/// different host request. Restore the graph to the rate the device actually
+/// reports so a failed selection cannot leave desktop audio mismatched.
+fn recover_external_rate(kind: Kind, requested: u32, error: anyhow::Error) -> Result<()> {
+    let actual = usb_rate::get_hardware_rate(kind)
+        .context("read hardware rate while recovering the audio graph")?;
+    if !SUPPORTED_RATES.contains(&actual) {
+        bail!("{error}; hardware reported unsupported recovery rate {actual} Hz");
+    }
+
+    RateLock::record_intent(actual);
+    match apply_pipewire(kind, actual) {
+        Ok(()) => bail!(
+            "{error}; the device remained at {actual} Hz and PipeWire was restored to match"
+        ),
+        Err(recovery) => bail!(
+            "{error}; failed to restore PipeWire from requested {requested} Hz to hardware rate {actual} Hz: {recovery}"
+        ),
+    }
 }
 
 fn rate_enum(hz: u32) -> Result<u8> {
@@ -75,8 +98,12 @@ fn apply_pipewire(kind: Kind, hz: u32) -> Result<()> {
         if let Ok(card) = alsa::find_card(kind) {
             wait_for_idle(card);
         }
-        usb_rate::set_hardware_rate(kind, hz)?;
-        pipewire::start_stack()?;
+        // Always restore desktop audio, even when an externally clocked
+        // device rejects or fails a hardware-rate request.
+        let rate_result = usb_rate::set_hardware_rate(kind, hz);
+        let start_result = pipewire::start_stack();
+        rate_result?;
+        start_result?;
     } else {
         pipewire::ensure_stack()?;
         pipewire::restart_wireplumber()?;
@@ -106,11 +133,15 @@ impl RateLock {
 
     fn acquire(hz: u32) -> Self {
         let _ = std::fs::write(Self::path(), format!("{hz}\n"));
+        Self::record_intent(hz);
+        Self
+    }
+
+    fn record_intent(hz: u32) {
         let _ = std::fs::write(
             std::env::temp_dir().join("octa-rate.intent"),
             format!("{hz}\n"),
         );
-        Self
     }
 }
 

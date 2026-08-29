@@ -74,6 +74,11 @@ impl DeviceSnapshot {
                 identities,
             };
         }
+        let octa_mixer = if kind == Kind::Octa {
+            card.and_then(|card| mixer::read(card).ok())
+        } else {
+            None
+        };
         match usb_rate::get_rate_state(kind) {
             Ok(rate) => Self {
                 kind,
@@ -81,16 +86,10 @@ impl DeviceSnapshot {
                 rate: Some(rate.hz),
                 rate_vendor_status: Some(rate.vendor_status),
                 clock: card.and_then(|card| kernel_mixer::read_clock_state(card).ok()),
-                mixer: if kind == Kind::Octa {
-                    card.and_then(|card| mixer::read(card).ok())
-                } else {
-                    None
-                },
-                device_globals_raw: if kind == Kind::Octa {
-                    card.and_then(|card| kernel_mixer::read_device_globals(card).ok())
-                } else {
-                    None
-                },
+                mixer: octa_mixer.clone(),
+                device_globals_raw: octa_mixer
+                    .as_ref()
+                    .map(|snapshot| snapshot.device_globals_raw),
                 kernel_preamps: if kind == Kind::Octa {
                     card.and_then(|card| kernel_mixer::read_preamps(card).ok())
                 } else {
@@ -135,9 +134,10 @@ impl DeviceSnapshot {
                 rate: None,
                 rate_vendor_status: None,
                 clock: card.and_then(|card| kernel_mixer::read_clock_state(card).ok()),
-                mixer: None,
-                device_globals_raw: card
-                    .and_then(|card| kernel_mixer::read_device_globals(card).ok()),
+                mixer: octa_mixer.clone(),
+                device_globals_raw: octa_mixer
+                    .as_ref()
+                    .map(|snapshot| snapshot.device_globals_raw),
                 kernel_preamps: card.and_then(|card| kernel_mixer::read_preamps(card).ok()),
                 kernel_direct_input_switches: card
                     .and_then(|card| kernel_mixer::read_direct_input_switches(card).ok()),

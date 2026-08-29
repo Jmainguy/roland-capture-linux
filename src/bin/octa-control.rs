@@ -318,22 +318,11 @@ impl ControlPanel {
                         .unwrap_or_else(|| "—".into()),
                 );
                 ui.end_row();
-                ui.strong("Clock source / sync");
-                ui.label(
-                    self.selected_status()
-                        .and_then(|status| status.clock)
-                        .map(format_clock_state)
-                        .unwrap_or_else(|| "Unavailable".into()),
-                );
-                ui.end_row();
-                ui.strong("Clock response");
-                ui.label(
-                    self.selected_status()
-                        .and_then(|status| status.rate_vendor_status)
-                        .map(format_vendor_status)
-                        .unwrap_or_else(|| "—".into()),
-                );
-                ui.end_row();
+                if let Some(clock) = self.selected_status().and_then(|status| status.clock) {
+                    ui.strong("Clock source / sync");
+                    ui.label(format_clock_state(clock));
+                    ui.end_row();
+                }
                 ui.strong("USB ID");
                 ui.monospace(self.selected.usbid());
                 ui.end_row();
@@ -1634,22 +1623,11 @@ impl ControlPanel {
                         .unwrap_or_else(|| "Unavailable".into()),
                 );
                 ui.end_row();
-                ui.strong("Clock source / sync");
-                ui.label(
-                    self.selected_status()
-                        .and_then(|status| status.clock)
-                        .map(format_clock_state)
-                        .unwrap_or_else(|| "Unavailable".into()),
-                );
-                ui.end_row();
-                ui.strong("Clock response");
-                ui.label(
-                    self.selected_status()
-                        .and_then(|status| status.rate_vendor_status)
-                        .map(format_vendor_status)
-                        .unwrap_or_else(|| "Unavailable".into()),
-                );
-                ui.end_row();
+                if let Some(clock) = self.selected_status().and_then(|status| status.clock) {
+                    ui.strong("Clock source / sync");
+                    ui.label(format_clock_state(clock));
+                    ui.end_row();
+                }
                 ui.strong("Device-global raw bytes");
                 ui.monospace(
                     self.selected_status()
@@ -2561,13 +2539,6 @@ fn format_clock_state(clock: octa::kernel_mixer::ClockState) -> String {
     }
 }
 
-fn format_vendor_status(status: u8) -> String {
-    match status {
-        0x01 => "Unassigned".into(),
-        _ => "Unknown".into(),
-    }
-}
-
 fn merge_hardware_value<T: Clone>(
     hardware: &mut T,
     draft: &mut T,
@@ -2584,12 +2555,6 @@ fn merge_hardware_value<T: Clone>(
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn formats_vendor_status_for_people_not_protocol_debugging() {
-        assert_eq!(format_vendor_status(0x01), "Unassigned");
-        assert_eq!(format_vendor_status(0xff), "Unknown");
-    }
 
     #[test]
     fn ui_preferences_round_trip_and_default_safely() {

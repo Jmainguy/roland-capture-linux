@@ -605,8 +605,12 @@ fn apply_pipewire(kind: Kind, hz: u32) -> Result<()> {
                 thread::sleep(Duration::from_millis(100));
             }
         }
-        usb_rate::set_hardware_rate(kind, hz)?;
-        pipewire::start_stack()?;
+        // Do not leave desktop audio stopped when an externally clocked
+        // device rejects or fails a hardware-rate request.
+        let rate_result = usb_rate::set_hardware_rate(kind, hz);
+        let start_result = pipewire::start_stack();
+        rate_result?;
+        start_result?;
     } else {
         pipewire::ensure_stack()?;
         pipewire::restart_wireplumber()?;
